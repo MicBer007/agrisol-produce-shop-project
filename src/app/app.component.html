@@ -1,11 +1,3 @@
 <h1>Vegetable Shop</h1>
 
-<ol class="list-group list-group-numbered">
-  <li *ngFor="let product of products" class="list-group-item d-flex justify-content-between align-items-start">
-    <div class="ms-2 me-auto">
-      <div class="fw-bold">Selling {{ product.name }}</div>
-      R{{product.price}}
-    </div>
-    <span class="badge text-bg-primary rounded-pill">{{ product.stock }} in stock</span>
-  </li>
-</ol>
+<app-products></app-products>

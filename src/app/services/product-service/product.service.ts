@@ -14,6 +14,8 @@ export class ProductService {
     {name: "Cabbages", amount: 70, price: 30}
   ];
 
+  protected cart: Product[] = [];
+
   getProducts(): Product[] {
     return this.products
   }
@@ -21,16 +23,48 @@ export class ProductService {
   getProduct(name: String): Product | undefined {
     return this.products.find(product => product.name === name)
   }
+  
+  getCart(){
+    return this.cart;
+  }
 
-  productSold(product: Product){
-    if(product.amount >= 1){
-      product.amount -= 1
+  buyCart(){
+    this.cart = []
+  }
+
+  clearCart(){
+    this.cart.forEach(cartItem => this.productReturned(cartItem))
+    this.cart = []
+  }
+
+  productReturned(cartItem: Product){ //TODO the items are not really removed from the cart
+    var hasFoundMatch = false
+    this.products.forEach(product => {
+      if(product.name === cartItem.name){
+        product.amount += cartItem.amount
+        hasFoundMatch = true
+      }
+    })
+    if(!hasFoundMatch){ //should never happen
+      console.log("Customer returned product that never existed!")
+      this.products.push(cartItem)
     }
   }
 
-  productSoldInAmount(product: Product, amount: number){
+  productSold(product: Product, amount: number){
     if(product.amount >= amount){
       product.amount -= amount
+      var hasFoundMatch = false
+      this.cart.forEach(cartItem => {
+        if(cartItem.name === product.name){
+          cartItem.amount += amount
+          hasFoundMatch = true
+        }
+      })
+      if(!hasFoundMatch){
+        var newItem: Product = {name: product.name, amount: amount, price:product.price}
+        this.cart.push(newItem)
+      }
     }
   }
 

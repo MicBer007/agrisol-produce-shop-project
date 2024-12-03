@@ -15,9 +15,8 @@ export class ProductsComponent {
   products;
   constructor(){
     this.products = this.productService.getProducts()
-    
   }
   productBought(product: Product, inputElement: HTMLInputElement){
-    this.productService.productSoldInAmount(product, Number(inputElement.value));
+    this.productService.productSold(product, Number(inputElement.value));
   };
 }

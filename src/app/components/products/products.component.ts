@@ -1,17 +1,23 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
+import { ProductService } from '../../services/product-service/product.service';
+import { Product } from './product';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-products',
-  imports: [CommonModule],
+  imports: [CommonModule, FormsModule],
   templateUrl: './products.component.html',
   styleUrl: './products.component.css'
 })
 export class ProductsComponent {
-  products = [
-    {name: "Potatoes", stock: 300, price: 10},
-    {name: "Maize heads", stock: 200, price: 15},
-    {name: "Carrots", stock: 100, price: 7},
-    {name: "Cabbages", stock: 70, price: 30}
-  ];
+  productService = inject(ProductService)
+  products;
+  constructor(){
+    this.products = this.productService.getProducts()
+    
+  }
+  productBought(product: Product, inputElement: HTMLInputElement){
+    this.productService.productSoldInAmount(product, Number(inputElement.value));
+  };
 }

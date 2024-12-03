@@ -12,7 +12,7 @@
         <tr *ngFor="let cartItem of cart">
           <td>{{cartItem.name}}</td>
           <td>{{cartItem.amount}}</td>
-          <td>R{{cartItem.price}}</td>
+          <td>R{{cartItem.price*cartItem.amount}}</td>
         </tr>
       </tbody>
    </table>

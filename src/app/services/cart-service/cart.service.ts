@@ -1,41 +1,44 @@
 import { Injectable } from '@angular/core';
-import { Product } from '../../models/product';
+import { ProductModel } from '../../models/product';
+import { BehaviorSubject } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
 export class CartService {
 
-  protected cart: Product[] = []
+  cart$: BehaviorSubject<ProductModel[]> = new BehaviorSubject<ProductModel[]>([])
 
   constructor() { }
   
-  getCart(){
-    return this.cart;
-  }
 
   clearCart(){
-    this.cart = []
+    this.cart$.next([])
   }
 
-  productReturned(product: Product){
-    this.cart.splice(this.cart.indexOf(product), 1)
+  removeProductFromCart(product: ProductModel){
+    var cartList = this.cart$.value;
+
+    cartList.splice(cartList.indexOf(product), 1)
+
+    this.cart$.next(cartList)
   }
 
-  productSold(shopItem: Product, amount: number){
-    console.log("CartService: registered product sale.")
-    if(shopItem.inStock < amount) return;
+  addProductToCart(shopItem: ProductModel){
+    if(shopItem.inStock < shopItem.amount) return;
     var hasFoundMatch = false
-    this.cart.forEach(cartItem => {
-      if(cartItem.id === shopItem.id){
-        cartItem.amount += amount
+    var cartList = this.cart$.value;
+
+    cartList.forEach(cartItem => {
+      if(cartItem.id === shopItem.id && !hasFoundMatch){
         hasFoundMatch = true
+        cartItem.amount += shopItem.amount
       }
     })
     if(!hasFoundMatch){
-      var newItem: Product = new Product(shopItem.name, shopItem.price, shopItem.id, 0, amount)
-      this.cart.push(newItem)
+      cartList.push(new ProductModel(shopItem.name, shopItem.price, shopItem.id, shopItem.inStock, shopItem.amount))
     }
+    this.cart$.next(cartList)
   }
 
 }

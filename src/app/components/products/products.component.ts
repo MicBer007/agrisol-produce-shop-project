@@ -1,7 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { ProductService } from '../../services/product-service/product.service';
-import { Product } from '../../models/product';
+import { ProductModel } from '../../models/product';
 import { FormsModule } from '@angular/forms';
 import { CartService } from '../../services/cart-service/cart.service';
 
@@ -13,17 +13,17 @@ import { CartService } from '../../services/cart-service/cart.service';
 })
 export class ProductsComponent implements OnInit {
 
-  products: Product[] = [];
+  products: ProductModel[] = [];
 
   constructor(private productService: ProductService, private cartService: CartService){ }
   
   ngOnInit(): void {
-    this.products = this.productService.getProducts()
+    this.productService.products$.subscribe(payload => this.products = payload);
   }
 
-  productBought(shopItem: Product){
+  buyClicked(shopItem: ProductModel){
     console.log(shopItem.amount);
-    this.productService.productSold(shopItem, shopItem.amount);
-    this.cartService.productSold(shopItem, shopItem.amount);
+    this.cartService.addProductToCart(shopItem);
+    this.productService.removeProduct(shopItem);
   };
 }

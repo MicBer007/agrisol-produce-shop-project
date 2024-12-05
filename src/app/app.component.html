@@ -21,3 +21,8 @@
 </nav>
 
 <router-outlet></router-outlet>
+
+<span *ngIf="cartLength === 0" style="background-color:#0bb310;margin-left:20px; margin-top:30px">
+  Cart is empty!
+  {{cartLength}}
+</span>

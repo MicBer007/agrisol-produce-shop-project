@@ -1,5 +1,7 @@
 import { Injectable } from '@angular/core';
-import { Product } from '../../models/product';
+import { ProductModel } from '../../models/product';
+import { ProductDto } from '../../dto/product-dto';
+import { BehaviorSubject } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -7,34 +9,31 @@ import { Product } from '../../models/product';
 
 export class ProductService {
 
-  protected shopItems: Product[] = [];
-
-  generateProducts() {
-    console.log("Generating products.")
-    this.shopItems.push(new Product("Potatoes", 10, 0, 300, 1))
-    this.shopItems.push(new Product("Maize heads", 15, 1, 100, 1))
-    this.shopItems.push(new Product("Carrots", 7, 2, 200, 1))
-    this.shopItems.push(new Product("Cabbages", 30, 3, 70, 1))
+  constructor() {
+    this.products = this.productsDto.map(productDto => new ProductModel(productDto.name, productDto.price, productDto.id, productDto.inStock, 1));
+    this.products$.next(this.products)
   }
 
-  getProducts(): Product[] {
-    return this.shopItems
+  protected products: ProductModel[] = [new ProductModel("Tomatoes", 10, 0, 300, 1)];
+  
+  products$: BehaviorSubject<ProductModel[]> = new BehaviorSubject<ProductModel[]>([]) ;
+
+  productsDto: ProductDto[] = 
+  [
+    {name: "Potatoes", price: 10, id: 0, inStock: 300},
+    {name: "Maize heads", price: 15, id: 1, inStock: 100},
+    {name: "Carrots", price: 7, id: 2, inStock: 200},
+    {name: "Cabbages", price: 30, id: 3, inStock: 70}
+  ];
+
+  getProducts(){
+    return this.products
   }
 
-  getProduct(id: number): Product | undefined {
-    var returnProduct = undefined
-    this.shopItems.forEach(product => {
-      if(product.id === id) {
-        returnProduct = product
-      }
-    })
-    return returnProduct
-  }
-
-  productReturned(product: Product){
-    console.log("Customer returned product with name: " + product.name)
+  addProduct(product: ProductModel){
     var hasFoundMatch = false
-    this.shopItems.forEach(shopItem => {
+    var shopItems = this.products$.value
+    shopItems.forEach(shopItem => {
       if(shopItem.name === product.name && !hasFoundMatch){
         shopItem.inStock += product.amount
         hasFoundMatch = true
@@ -42,17 +41,14 @@ export class ProductService {
     })
     if(!hasFoundMatch){ //should never happen
       console.log("Customer returned product that never existed!")
-      this.shopItems.push(new Product(product.name, product.amount, product.id, product.amount, 0))
+      shopItems.push(new ProductModel(product.name, product.price, product.id, product.inStock, 0))
     }
+    this.products$.next(shopItems)
   }
 
-  productSold(product: Product, amount: number){
-    if(product.inStock < amount) return;
-    product.inStock -= amount
-  }
-
-  constructor() {
-    this.generateProducts();
+  removeProduct(product: ProductModel){
+    if(product.inStock < product.amount) return;
+    product.inStock -= product.amount
   }
 
 }

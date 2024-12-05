@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Product } from '../../components/products/product';
+import { Product } from '../../models/product';
 
 @Injectable({
   providedIn: 'root'
@@ -7,66 +7,52 @@ import { Product } from '../../components/products/product';
 
 export class ProductService {
 
-  protected products: Product[] = [
-    {name: "Potatoes", amount: 300, price: 10},
-    {name: "Maize heads", amount: 200, price: 15},
-    {name: "Carrots", amount: 100, price: 7},
-    {name: "Cabbages", amount: 70, price: 30}
-  ];
+  protected shopItems: Product[] = [];
 
-  protected cart: Product[] = [];
+  generateProducts() {
+    console.log("Generating products.")
+    this.shopItems.push(new Product("Potatoes", 10, 0, 300, 1))
+    this.shopItems.push(new Product("Maize heads", 15, 1, 100, 1))
+    this.shopItems.push(new Product("Carrots", 7, 2, 200, 1))
+    this.shopItems.push(new Product("Cabbages", 30, 3, 70, 1))
+  }
 
   getProducts(): Product[] {
-    return this.products
+    return this.shopItems
   }
 
-  getProduct(name: String): Product | undefined {
-    return this.products.find(product => product.name === name)
-  }
-  
-  getCart(){
-    return this.cart;
-  }
-
-  buyCart(){
-    this.cart = []
+  getProduct(id: number): Product | undefined {
+    var returnProduct = undefined
+    this.shopItems.forEach(product => {
+      if(product.id === id) {
+        returnProduct = product
+      }
+    })
+    return returnProduct
   }
 
-  clearCart(){
-    this.cart.forEach(cartItem => this.productReturned(cartItem))
-    this.cart = []
-  }
-
-  productReturned(cartItem: Product){ //TODO the items are not really removed from the cart
+  productReturned(product: Product){
+    console.log("Customer returned product with name: " + product.name)
     var hasFoundMatch = false
-    this.products.forEach(product => {
-      if(product.name === cartItem.name){
-        product.amount += cartItem.amount
+    this.shopItems.forEach(shopItem => {
+      if(shopItem.name === product.name && !hasFoundMatch){
+        shopItem.inStock += product.amount
         hasFoundMatch = true
       }
     })
     if(!hasFoundMatch){ //should never happen
       console.log("Customer returned product that never existed!")
-      this.products.push(cartItem)
+      this.shopItems.push(new Product(product.name, product.amount, product.id, product.amount, 0))
     }
   }
 
   productSold(product: Product, amount: number){
-    if(product.amount >= amount){
-      product.amount -= amount
-      var hasFoundMatch = false
-      this.cart.forEach(cartItem => {
-        if(cartItem.name === product.name){
-          cartItem.amount += amount
-          hasFoundMatch = true
-        }
-      })
-      if(!hasFoundMatch){
-        var newItem: Product = {name: product.name, amount: amount, price:product.price}
-        this.cart.push(newItem)
-      }
-    }
+    if(product.inStock < amount) return;
+    product.inStock -= amount
   }
 
-  constructor() { }
+  constructor() {
+    this.generateProducts();
+  }
+
 }

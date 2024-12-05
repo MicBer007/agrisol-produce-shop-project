@@ -1,4 +1,4 @@
-<div *ngIf="cart.length > 0">
+<div *ngIf="cartItems.length > 0">
    <h2 style="margin-left:20px;margin-top:10px;">Your cart</h2>
    <table style="margin-left:20px" class="table">
       <thead>
@@ -9,7 +9,7 @@
         </tr>
       </thead>
       <tbody>
-        <tr *ngFor="let cartItem of cart">
+        <tr *ngFor="let cartItem of cartItems">
           <td>{{cartItem.name}}</td>
           <td>{{cartItem.amount}}</td>
           <td>R{{cartItem.price*cartItem.amount}}</td>
@@ -19,6 +19,3 @@
    <button (click)="buyCart()" class="btn btn-primary" style="margin-left:20px; margin-top:10px">Buy</button>
    <button (click)="clearCart()" class="btn btn-primary" style="margin-left:20px; margin-top:10px">Clear cart</button>
 </div>
-<span *ngIf="cart.length === 0" style="background-color:#0bb310;margin-left:20px; margin-top:30px">
-   Cart is empty!
-</span>

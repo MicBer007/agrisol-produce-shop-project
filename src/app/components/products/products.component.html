@@ -5,10 +5,10 @@
       R{{product.price}}
     </div>
     <div class="ms-1 me-auto">
-      <button (click)="productBought(product, databoxInput)" type="button" class="btn btn-success btn-lg">Buy</button>
-      <input type="range" class="form-range" min="1" max="{{product.amount}}" step="1" value="1" id="box_ + {{product.name}}" #databoxInput>
-      <span>{{databoxInput.value}}</span>
+      <button (click)="productBought(product)" type="button" class="btn btn-success btn-lg">Buy</button>
+      <input type="range" class="form-range" min="1" max="{{product.inStock}}" [(ngModel)]="product.amount" step="1">
+      <span>{{product.amount}}</span>
     </div>
-    <span class="badge text-bg-primary rounded-pill">{{ product.amount }} in stock</span>
+    <span class="badge text-bg-primary rounded-pill">{{ product.inStock }} in stock</span>
   </li>
 </ol>

@@ -1,8 +1,9 @@
 import { CommonModule } from '@angular/common';
-import { Component, inject } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { ProductService } from '../../services/product-service/product.service';
-import { Product } from './product';
+import { Product } from '../../models/product';
 import { FormsModule } from '@angular/forms';
+import { CartService } from '../../services/cart-service/cart.service';
 
 @Component({
   selector: 'app-products',
@@ -10,13 +11,19 @@ import { FormsModule } from '@angular/forms';
   templateUrl: './products.component.html',
   styleUrl: './products.component.css'
 })
-export class ProductsComponent {
-  productService = inject(ProductService)
-  products;
-  constructor(){
+export class ProductsComponent implements OnInit {
+
+  products: Product[] = [];
+
+  constructor(private productService: ProductService, private cartService: CartService){ }
+  
+  ngOnInit(): void {
     this.products = this.productService.getProducts()
   }
-  productBought(product: Product, inputElement: HTMLInputElement){
-    this.productService.productSold(product, Number(inputElement.value));
+
+  productBought(shopItem: Product){
+    console.log(shopItem.amount);
+    this.productService.productSold(shopItem, shopItem.amount);
+    this.cartService.productSold(shopItem, shopItem.amount);
   };
 }

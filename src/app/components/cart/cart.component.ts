@@ -1,7 +1,8 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { ProductService } from '../../services/product-service/product.service';
-import { Product } from '../products/product';
 import { CommonModule } from '@angular/common';
+import { Product } from '../../models/product';
+import { CartService } from '../../services/cart-service/cart.service';
 
 @Component({
   selector: 'app-cart',
@@ -9,22 +10,27 @@ import { CommonModule } from '@angular/common';
   templateUrl: './cart.component.html',
   styleUrl: './cart.component.css'
 })
-export class CartComponent {
-  productService = inject(ProductService)
-  cart: Product[] = [];
+export class CartComponent implements OnInit {
 
-  constructor() {
-    this.cart = this.productService.getCart();
+  cartItems: Product[] = []
+
+  constructor(private productService: ProductService, private cartService: CartService) { }
+
+  ngOnInit(): void {
+    this.cartItems = this.cartService.getCart();
   }
 
   buyCart(){
-    this.productService.buyCart()
-    this.cart = []
+    this.cartService.clearCart()
+    this.cartItems = []
   }
 
   clearCart(){
-    this.productService.clearCart()
-    this.cart = []
+    this.cartService.clearCart()
+    this.cartItems.forEach(cartItem => {
+      this.productService.productReturned(cartItem)
+    })
+    this.cartItems = []
   }
 
 }

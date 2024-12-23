@@ -10,7 +10,6 @@ export class CartService {
   cart$: BehaviorSubject<ProductModel[]> = new BehaviorSubject<ProductModel[]>([])
 
   constructor() { }
-  
 
   clearCart(){
     this.cart$.next([])
@@ -26,9 +25,9 @@ export class CartService {
 
   addProductToCart(shopItem: ProductModel){
     if(shopItem.inStock < shopItem.amount) return;
-    var hasFoundMatch = false
     var cartList = this.cart$.value;
 
+    var hasFoundMatch = false
     cartList.forEach(cartItem => {
       if(cartItem.id === shopItem.id && !hasFoundMatch){
         hasFoundMatch = true
@@ -38,6 +37,7 @@ export class CartService {
     if(!hasFoundMatch){
       cartList.push(new ProductModel(shopItem.name, shopItem.price, shopItem.id, shopItem.inStock, shopItem.amount))
     }
+    
     this.cart$.next(cartList)
   }
 

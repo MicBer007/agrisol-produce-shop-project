@@ -22,8 +22,10 @@ export class ProductsComponent implements OnInit {
   }
 
   buyClicked(shopItem: ProductModel){
-    console.log(shopItem.amount);
     this.cartService.addProductToCart(shopItem);
-    this.productService.removeProduct(shopItem);
+    this.productService.removeAmountOfProduct(shopItem.amount, shopItem);
+    if(shopItem.amount > shopItem.inStock){
+      shopItem.amount = shopItem.inStock
+    }
   };
 }

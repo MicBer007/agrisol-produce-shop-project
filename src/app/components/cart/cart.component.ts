@@ -14,23 +14,35 @@ export class CartComponent implements OnInit {
 
   cartItems: ProductModel[] = []
 
+  totalAmount: number = 0;
+  totalPrice: number = 0;
+
   constructor(private productService: ProductService, private cartService: CartService) { }
 
   ngOnInit(): void {
-    this.cartService.cart$.subscribe(payload => this.cartItems = payload);
+    this.cartService.cart$.subscribe(payload => this.updateCart(payload));
+  }
+
+  updateCart(newCart: ProductModel[]){
+    this.cartItems = newCart;
+    this.totalAmount = 0;
+    this.totalPrice = 0;
+    this.cartItems.forEach(cartItem => {
+      this.totalAmount += cartItem.amount; 
+      this.totalPrice += cartItem.amount*cartItem.price
+    });
   }
 
   buyCart(){
+    //do product transactions (payment, delivery, etc.)
     this.cartService.clearCart()
-    this.cartItems = []
   }
 
   clearCart(){
-    this.cartService.clearCart()
     this.cartItems.forEach(cartItem => {
-      this.productService.addProduct(cartItem)
+      this.productService.addAmountOfProduct(cartItem.amount, cartItem)
     })
-    this.cartItems = []
+    this.cartService.clearCart()
   }
 
 }

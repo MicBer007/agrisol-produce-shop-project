@@ -14,28 +14,26 @@ export class ProductService {
     this.products$.next(this.products)
   }
 
-  protected products: ProductModel[] = [new ProductModel("Tomatoes", 10, 0, 300, 1)];
-  
-  products$: BehaviorSubject<ProductModel[]> = new BehaviorSubject<ProductModel[]>([]) ;
-
-  productsDto: ProductDto[] = 
+  protected productsDto: ProductDto[] = 
   [
+    {name: "Tomatoes", price: 10, id: 5, inStock: 150},
     {name: "Potatoes", price: 10, id: 0, inStock: 300},
     {name: "Maize heads", price: 15, id: 1, inStock: 100},
     {name: "Carrots", price: 7, id: 2, inStock: 200},
     {name: "Cabbages", price: 30, id: 3, inStock: 70}
   ];
 
-  getProducts(){
-    return this.products
-  }
+  protected products: ProductModel[] = [];
+  
+  products$: BehaviorSubject<ProductModel[]> = new BehaviorSubject<ProductModel[]>([]);
 
-  addProduct(product: ProductModel){
-    var hasFoundMatch = false
+  addAmountOfProduct(amount: number, product: ProductModel){
     var shopItems = this.products$.value
+
+    var hasFoundMatch = false
     shopItems.forEach(shopItem => {
       if(shopItem.name === product.name && !hasFoundMatch){
-        shopItem.inStock += product.amount
+        shopItem.inStock += amount
         hasFoundMatch = true
       }
     })
@@ -43,12 +41,13 @@ export class ProductService {
       console.log("Customer returned product that never existed!")
       shopItems.push(new ProductModel(product.name, product.price, product.id, product.inStock, 0))
     }
+
     this.products$.next(shopItems)
   }
 
-  removeProduct(product: ProductModel){
-    if(product.inStock < product.amount) return;
-    product.inStock -= product.amount
+  removeAmountOfProduct(amount: number, product: ProductModel){
+    if(product.inStock < amount) return;
+    product.inStock -= amount
   }
 
 }

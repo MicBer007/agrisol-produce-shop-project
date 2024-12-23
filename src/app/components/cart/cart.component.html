@@ -1,7 +1,7 @@
 <div *ngIf="cartItems.length > 0">
    <h2 style="margin-left:20px;margin-top:10px;">Your cart</h2>
    <table style="margin-left:20px" class="table">
-      <thead>
+      <thead class="table-dark">
         <tr>
           <th scope="col">Type</th>
           <th scope="col">Amount</th>
@@ -15,6 +15,13 @@
           <td>R{{cartItem.price*cartItem.amount}}</td>
         </tr>
       </tbody>
+      <tfoot *ngIf="cartItems.length > 1" class="table-light">
+        <tr>
+          <td>Total</td>
+          <td>{{totalAmount}}</td>
+          <td>R{{totalPrice}}</td>
+        </tr>
+      </tfoot>
    </table>
    <button (click)="buyCart()" class="btn btn-primary" style="margin-left:20px; margin-top:10px">Buy</button>
    <button (click)="clearCart()" class="btn btn-primary" style="margin-left:20px; margin-top:10px">Clear cart</button>

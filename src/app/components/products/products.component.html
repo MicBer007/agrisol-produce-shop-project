@@ -5,10 +5,10 @@
       R{{product.price}}
     </div>
     <div class="ms-1 me-auto">
-      <button (click)="buyClicked(product)" type="button" class="btn btn-success btn-lg">Buy</button>
-      <input type="range" class="form-range" min="1" max="{{product.inStock}}" [(ngModel)]="product.amount" step="1">
+      <button (click)="buyClicked(product)" [disabled]="product.amount === 0" type="button" class="btn btn-success btn-lg">Buy</button>
+      <input type="range" class="form-range" min="1" max="{{product.inStock}}" [(ngModel)]="product.amount" step="1" #slider>
       <span>{{product.amount}}</span>
     </div>
-    <span class="badge text-bg-primary rounded-pill">{{ product.inStock }} in stock</span>
+    <span class="badge text-bg-primary rounded-pill">{{product.inStock}} in stock</span>
   </li>
 </ol>

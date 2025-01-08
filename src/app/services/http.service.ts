@@ -1,5 +1,5 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Injectable, ɵɵresolveBody } from '@angular/core';
+import { Injectable } from '@angular/core';
 
 @Injectable({
   providedIn: 'root'
@@ -8,12 +8,11 @@ export class HttpService {
   
   constructor(private httpService: HttpClient) { }
 
-  public get = (route: string) =>{
+  public get(route: string) {
     return this.httpService.get(route);
   }
 
-
-  public post = (route: string, payload: any) => {
+  public post (route: string, payload: any) {
     const httpOptions = {
       headers: new HttpHeaders({
         'content-type':  'application/json'        
@@ -21,18 +20,18 @@ export class HttpService {
     } 
     return this.httpService.post(route, payload, httpOptions);
   }
-
-  public delete = (route: string, id: any) => {
+  
+  public delete (route: string, id: any) {
     const httpOptions = {
       headers: new HttpHeaders({
-        'content-type':  'application/json'        
+        'content-type':  'application/json'
       }),
-      body: id
+      body: "\""+ id + "\""
     }
     return this.httpService.delete(route, httpOptions);
   }
 
-  public put = (routeString: string, payload : any ) => {
+  public put(routeString: string, payload : any ) {
     const httpOptions = {
       headers: new HttpHeaders({
         'content-type':  'application/json'        
@@ -40,7 +39,7 @@ export class HttpService {
       body : payload
     }
     return this.httpService.put(routeString, httpOptions);
-}
+  }
 
 }
 

@@ -1,6 +1,7 @@
 export class ProductDto{
+   id?: string; //id needs to be able to be set by the backend
    name!: string;
    price!: number;
-   id!: number;
-   inStock!: number
+   inStock!: number;
+   pictureName!: string;
 }

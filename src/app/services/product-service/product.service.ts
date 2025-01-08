@@ -29,7 +29,7 @@ export class ProductService {
       }
     })
     if(!hasFoundMatch){
-      shopItems.push(new ProductModel(product.name, product.price, product.id, product.inStock, 0, product.picturePath))
+      shopItems.push(new ProductModel(product.id, product.name, product.price, product.inStock, 0, product.picturePath))
     }
 
     this.products$.next(shopItems)
@@ -47,13 +47,18 @@ export class ProductService {
       }));
   }
 
-  add$ (productModel: ProductModel) {
-    let dto = ProductEvolver.toDto(productModel);
+  add$(productModel: ProductModel) {
+    let dto = ProductEvolver.toDtoWithoutId(productModel);
     return this.httpService.post("https://localhost:7244/api/Product", dto);
   }
 
-  delete$ (id: any) {
+  delete$(id: any) {
     return this.httpService.delete("https://localhost:7244/api/Product", id);
+  }
+
+  put$(productModel: ProductModel) {
+    let dto = ProductEvolver.toDto(productModel);
+    return this.httpService.put("https://localhost:7244/api/Product", dto);
   }
 
 }

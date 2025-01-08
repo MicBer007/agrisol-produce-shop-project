@@ -21,7 +21,7 @@ export class AddProductComponent {
   onAddProductClicked(){
     // if(this.name == "null" || this.price == -1 || this.stockAmount == -1 || this.pictureName == "null") return;
     var picturePath = "assets/" + this.pictureName;
-    var productModel = new ProductModel(this.name, this.price, "", this.stockAmount, 1, picturePath);
+    var productModel = new ProductModel("", this.name, this.price, this.stockAmount, 1, picturePath);
     this.productService.add$(productModel).subscribe(payload => console.log(payload));
   }
 

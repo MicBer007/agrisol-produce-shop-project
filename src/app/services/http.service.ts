@@ -32,13 +32,13 @@ export class HttpService {
   }
 
   public put(routeString: string, payload : any ) {
+    console.log(JSON.stringify(payload));
     const httpOptions = {
       headers: new HttpHeaders({
         'content-type':  'application/json'        
-      }),
-      body : payload
+      })
     }
-    return this.httpService.put(routeString, httpOptions);
+    return this.httpService.put(routeString, payload, httpOptions);
   }
 
 }

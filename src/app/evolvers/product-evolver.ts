@@ -15,12 +15,24 @@ export class ProductEvolver {
       return model;
    }
 
-   static toDto(model: ProductModel): ProductDto {
+   static toDtoWithoutId(model: ProductModel): ProductDto {
       var dtoPictureName = model.picturePath.split("/")[1];
       var dto: ProductDto = {
          name: model.name,
          price: model.price,
          
+         inStock: model.inStock,
+         pictureName: dtoPictureName
+      };
+      return dto;
+   }
+
+   static toDto(model: ProductModel): ProductDto {
+      var dtoPictureName = model.picturePath.split("/")[1];
+      var dto: ProductDto = {
+         id: model.id,
+         name: model.name,
+         price: model.price,
          inStock: model.inStock,
          pictureName: dtoPictureName
       };

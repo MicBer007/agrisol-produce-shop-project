@@ -1,0 +1,53 @@
+<div class="container-fluid m-2">
+   <table class="table table-responsive table-striped">
+      <thead class="table-dark">
+         <tr>
+            <th scope="col"></th>
+            <th scope="col">Name</th>
+            <th scope="col">Surname</th>
+            <th scope="col">Age</th>
+            <th scope="col">Bank Details</th>
+            <th scope="col"></th>
+         </tr>
+      </thead>
+      <tbody>
+         <tr *ngFor="let customer of customers">
+            <td><button (click)="onCustomerRemoveClicked(customer)" class="btn btn-danger">Remove</button></td>
+            <td><input [(ngModel)]="customer.firstName"></td>
+            <td><input [(ngModel)]="customer.lastName"></td>
+            <td><input [(ngModel)]="customer.age"></td>
+            <td><input [(ngModel)]="customer.bankDetails"></td>
+            <td><button (click)="onCustomerEditClicked(customer)" class="btn btn-success">Edit</button></td>
+         </tr>
+      </tbody>
+   </table>
+</div>
+
+<div class="card m-3 mt-5">
+   <div class="card-header">
+      <h2 class="text-centre">Add new customer</h2>
+   </div>
+   <div class="card-body container my-3 mt-5">
+      <form>
+         <div class="row g-4">
+            <div class="col-12 col-sm-6 col-lg-4 form-floating">
+               <input class="form-control" class="form-control" [(ngModel)]="customerFirstName" name="name" placeholder="name" required minlength="1">
+               <label for="name">First name</label>
+            </div>
+            <div class="col-12 col-sm-6 col-lg-4 form-floating">
+               <input class="form-control" [(ngModel)]="customerLastName" name="price" placeholder="price" required>
+               <label for="name">Last name</label>
+            </div>
+            <div class="col-12 col-sm-6 col-lg-4 form-floating">
+               <input class="form-control" [(ngModel)]="customerAgeString" name="stock amount" placeholder="stock amount" required>
+               <label for="name">Age</label>
+            </div>
+            <div class="col-12 col-sm-6 col-lg-4 form-floating">
+               <input class="form-control" [(ngModel)]="customerBankDetails" name="picture path" placeholder="picture name">
+               <label for="name">Bank details</label>
+            </div>
+         </div>
+         <button (click)="onAddCustomerClicked()" class="btn btn-primary btn-lg mt-4" type="submit">Add Product</button>
+      </form>
+   </div>
+</div>

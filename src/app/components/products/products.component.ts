@@ -33,15 +33,6 @@ export class ProductsComponent implements OnInit {
     }
   };
 
-  onDeleteProductClicked(id: string){
-    this.productService.delete$(id).subscribe(payload => console.log("product deleted! id: " + id + " payload: " + payload));
-  }
-
-  putProductClicked(){
-    var model: ProductModel = new ProductModel("3E7F899D-867C-4698-B853-6C66C0F413FB", "maize", 15, 500, 1, "assets/maize.jpg");
-    this.productService.put$(model).subscribe(payload => console.log("product updated! payload: " + payload));
-  }
-
 }
 
 

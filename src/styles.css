@@ -3,3 +3,9 @@ body {
    background-size: cover;
    background-repeat: no-repeat;
 }
+
+.text-centre {
+   display: flex;
+   justify-content: center;
+   align-items: center;
+}

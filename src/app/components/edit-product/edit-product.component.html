@@ -1,1 +1,53 @@
-<p>edit-product works!</p>
+<div class="container-fluid m-1 my-2 mb-5">
+   <table class="table table-responsive table-striped">
+      <thead>
+         <tr class="table-primary">
+            <th scope="col"></th>
+            <th scope="col">Name</th>
+            <th scope="col">Price</th>
+            <th scope="col">Stock amount</th>
+            <th scope="col">Picture path</th>
+            <th scope="col"></th>
+         </tr>
+      </thead>
+      <tbody>
+         <tr *ngFor="let product of products">
+            <td><button (click)="onDeleteProductClicked(product)" class="btn btn-danger">Delete</button></td>
+            <td class="table-light" scope="row">{{product.name}}</td>
+            <td><input [(ngModel)]="product.price"></td>
+            <td><input [(ngModel)]="product.inStock"></td>
+            <td><input [(ngModel)]="product.picturePath"></td>
+            <td><button (click)="onEditProductClicked(product)" class="btn btn-success">Edit</button></td>
+         </tr>
+      </tbody>
+   </table>
+</div>
+
+<div class="card m-3 mt-5">
+   <div class="card-header">
+      <h2 class="text-centre">Add new product</h2>
+   </div>
+   <div class="card-body container my-3 mt-5">
+      <form>
+         <div class="row g-4">
+            <div class="col-12 col-sm-6 col-lg-4 form-floating">
+               <input class="form-control" class="form-control" [(ngModel)]="name" name="name" placeholder="name" required minlength="1">
+               <label for="name">Product name</label>
+            </div>
+            <div class="col-12 col-sm-6 col-lg-4 form-floating">
+               <input class="form-control" [(ngModel)]="price" name="price" placeholder="price" required>
+               <label for="name">Product price</label>
+            </div>
+            <div class="col-12 col-sm-6 col-lg-4 form-floating">
+               <input class="form-control" [(ngModel)]="stockAmount" name="stock amount" placeholder="stock amount" required>
+               <label for="name">Product stock amount</label>
+            </div>
+            <div class="col-12 col-sm-6 col-lg-4 form-floating">
+               <input class="form-control" [(ngModel)]="pictureName" name="picture path" placeholder="picture name">
+               <label for="name">Product picture name</label>
+            </div>
+         </div>
+         <button (click)="onAddProductClicked()" class="btn btn-primary btn-lg mt-4" type="submit">Add Product</button>
+      </form>
+   </div>
+</div>

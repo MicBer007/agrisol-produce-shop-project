@@ -3,7 +3,7 @@ import { ProductModel } from "../models/product";
 
 export class ProductEvolver {
 
-   static toModel(dto: ProductDto): ProductModel{
+   static toModel(dto: ProductDto): ProductModel {
       var model: ProductModel = {
          id: dto.id ? dto.id : "",
          name: dto.name,

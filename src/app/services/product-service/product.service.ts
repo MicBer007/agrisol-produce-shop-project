@@ -29,7 +29,7 @@ export class ProductService {
       }
     })
     if(!hasFoundMatch){
-      shopItems.push(new ProductModel(product.id, product.name, product.price, product.inStock, 0, product.picturePath))
+      shopItems.push(new ProductModel(product.id, product.name, product.price, product.inStock, 0, product.picturePath, []))
     }
 
     this.products$.next(shopItems)
@@ -41,24 +41,39 @@ export class ProductService {
   }
 
   getAll$() {
-    return this.httpService.get("https://localhost:7244/api/Product")
+    return this.httpService.get("https://localhost:7114/api/Product")
+      .pipe(map(dto => {
+        return (dto as ProductDto[]).map(productDto  => ProductEvolver.toModel(productDto));
+      }));
+  }
+
+  getAllWithSuppliers$() {
+    return this.httpService.get("https://localhost:7114/api/Product/Suppliers")
       .pipe(map(dto => {
         return (dto as ProductDto[]).map(productDto  => ProductEvolver.toModel(productDto));
       }));
   }
 
   add$(productModel: ProductModel) {
-    let dto = ProductEvolver.toDtoWithoutId(productModel);
-    return this.httpService.post("https://localhost:7244/api/Product", dto);
+    let dto = ProductEvolver.toDto(productModel);
+    return this.httpService.post("https://localhost:7114/api/Product", dto);
   }
 
-  delete$(id: any) {
-    return this.httpService.delete("https://localhost:7244/api/Product", id);
+  delete$(id: string) {
+    return this.httpService.delete("https://localhost:7114/api/Product/" + id, id);
   }
 
   put$(productModel: ProductModel) {
     let dto = ProductEvolver.toDto(productModel);
-    return this.httpService.put("https://localhost:7244/api/Product", dto);
+    return this.httpService.put("https://localhost:7114/api/Product", dto);
+  }
+
+  linkWithProductSupplier$(productSupplierId: string, productId: string) {
+    return this.httpService.putWithoutBody("https://localhost:7114/api/Product/LinkSupplier?productId=" + productId + "&supplierId=" + productSupplierId);
+  }
+
+  unlinkWithProductSupplier$(productSupplierId: string, productId: string) {
+    return this.httpService.putWithoutBody("https://localhost:7114/api/Product/UnlinkSupplier?productId=" + productId + "&supplierId=" + productSupplierId);
   }
 
 }

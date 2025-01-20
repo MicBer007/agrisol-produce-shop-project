@@ -1,7 +1,10 @@
+import { TransactionDto } from "./transaction-dto";
+
 export class CustomerDto {
-   id?: string;
+   customerId?: string;
    firstName!: string;
    lastName!: string;
    age!: number;
    bankDetails!: string;
+   transactions!: TransactionDto[];
 }

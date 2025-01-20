@@ -14,23 +14,32 @@ export class CustomerService {
 
   //CRUD
   getAll$() {
-    return this.httpService.get("https://localhost:7244/api/Customer")
+    return this.httpService.get("https://localhost:7114/api/Customer")
+      .pipe(map(customerList => {
+        return (customerList as CustomerDto[]).map(customerDto => CustomerEvolver.toModel(customerDto))
+      }));
+  }
+
+  getAllWithTransactions$() {
+    return this.httpService.get("https://localhost:7114/api/Customer/Transactions")
       .pipe(map(customerList => {
         return (customerList as CustomerDto[]).map(customerDto => CustomerEvolver.toModel(customerDto))
       }));
   }
   
   add$(customerModel: CustomerModel){
-    var customerDto = CustomerEvolver.toDtoWithoutId(customerModel);
-    return this.httpService.post("https://localhost:7244/api/Customer", customerDto);
+    var customerDto = CustomerEvolver.toDto(customerModel);
+    return this.httpService.post("https://localhost:7114/api/Customer", customerDto);
   }
 
   delete$(id: string){
-    return this.httpService.delete("https://localhost:7244/api/Customer", id);
+    return this.httpService.delete("https://localhost:7114/api/Customer/" + id, id);
   }
 
   put$(customerModel: CustomerModel){
-    return this.httpService.put("https://localhost:7244/api/Customer", CustomerEvolver.toDto(customerModel));
+    var dto = CustomerEvolver.toDto(customerModel);
+    console.log(dto);
+    return this.httpService.put("https://localhost:7114/api/Customer", dto);
   }
 
 }

@@ -28,3 +28,12 @@
     </div>
   </div>
 </div>
+
+<div class="bg-light m-2">
+  <div *ngFor="let supplier of suppliers">
+    {{supplier.name}}
+    <div *ngFor="let product of supplier.products">
+    --> {{product.name}}
+    </div>
+  </div>
+</div>

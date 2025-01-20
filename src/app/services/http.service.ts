@@ -16,7 +16,7 @@ export class HttpService {
     const httpOptions = {
       headers: new HttpHeaders({
         'content-type':  'application/json'        
-      }) 
+      })
     } 
     return this.httpService.post(route, payload, httpOptions);
   }
@@ -26,7 +26,7 @@ export class HttpService {
       headers: new HttpHeaders({
         'content-type':  'application/json'
       }),
-      body: "\""+ id + "\""
+      body: id
     }
     return this.httpService.delete(route, httpOptions);
   }
@@ -38,6 +38,10 @@ export class HttpService {
       })
     }
     return this.httpService.put(routeString, payload, httpOptions);
+  }
+
+  public putWithoutBody(routeString: string) {
+    return this.httpService.put(routeString, null);
   }
 
 }

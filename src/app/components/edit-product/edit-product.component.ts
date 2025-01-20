@@ -4,6 +4,9 @@ import { ProductModel } from '../../models/product';
 import { ProductService } from '../../services/product-service/product.service';
 import { FormsModule } from '@angular/forms';
 import { ProductDto } from '../../dto/product-dto';
+import { ProductEvolver } from '../../evolvers/product-evolver';
+import { ProductSupplierModel } from '../../models/product-supplier';
+import { ProductSupplierService } from '../../services/product-supplier-service/product-supplier.service';
 
 @Component({
   selector: 'app-edit-product',
@@ -18,11 +21,16 @@ export class EditProductComponent {
   stockAmount: string = "";
   pictureName: string = "";
   
+  productSuppliers: ProductSupplierModel[] = [];
   products: ProductModel[] = [];
 
-  constructor(private productService: ProductService){
-    this.productService.getAll$().subscribe(payload => {
+  constructor(private productService: ProductService, private productSupplierService: ProductSupplierService){
+    this.productService.getAllWithSuppliers$().subscribe(payload => {
       this.products = payload;
+      console.log(payload);
+    });
+    this.productSupplierService.getAllWithProducts$().subscribe(payload => {
+      this.productSuppliers = payload;
       console.log(payload);
     });
   }
@@ -45,10 +53,10 @@ export class EditProductComponent {
     }
 
     var picturePath = "assets/" + this.pictureName;
-    var productModel = new ProductModel("", this.name, parseInt(this.price), parseInt(this.stockAmount), 1, picturePath);
+    var productModel = new ProductModel("", this.name, parseInt(this.price), parseInt(this.stockAmount), 1, picturePath, []);
     this.productService.add$(productModel).subscribe(payload => {
       console.log(payload)
-      this.products.push(new ProductModel(payload.toString(), this.name, parseInt(this.price), parseInt(this.stockAmount), 1, picturePath));
+      this.products.push(ProductEvolver.toModel(payload as ProductDto));
     });
   }
 
@@ -66,9 +74,30 @@ export class EditProductComponent {
   onEditProductClicked(product: ProductModel){
     this.productService.put$(product).subscribe(payload => {
       console.log(payload);
-      if(payload as boolean){
-        //update products if needed
-      }
+    });
+  }
+
+  selectedProductModel?: ProductModel = undefined;
+  setSelectedProduct(productModel: ProductModel){
+    this.selectedProductModel = productModel;
+  }
+
+  selectedProductSupplierModel?: ProductSupplierModel = undefined;
+  setSelectedProductSupplier(productSupplierModel: ProductSupplierModel){
+    this.selectedProductSupplierModel = productSupplierModel;
+  }
+
+  addLinkClicked(){
+    this.productService.linkWithProductSupplier$(this.selectedProductSupplierModel?.id!, this.selectedProductModel?.id!).subscribe(payload => {
+      console.log(payload);
+      this.selectedProductSupplierModel!.products.push(this.products.find(p => p.id == this.selectedProductModel!.id)!);
+    });
+  }
+
+  removeLinkClicked(){
+    this.productService.unlinkWithProductSupplier$(this.selectedProductSupplierModel?.id!, this.selectedProductModel?.id!).subscribe(payload => {
+      console.log(payload);
+      this.selectedProductSupplierModel?.products.splice(this.selectedProductSupplierModel?.products.indexOf(this.selectedProductModel!), 1);
     });
   }
 

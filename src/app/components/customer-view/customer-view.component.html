@@ -1,5 +1,5 @@
-<div class="container-fluid m-2">
-   <table class="table table-responsive table-striped">
+<div class="container-fluid table-responsive m-1">
+   <table class="table table-striped">
       <thead class="table-dark">
          <tr>
             <th scope="col"></th>
@@ -7,6 +7,7 @@
             <th scope="col">Surname</th>
             <th scope="col">Age</th>
             <th scope="col">Bank Details</th>
+            <th scope="col"></th>
             <th scope="col"></th>
          </tr>
       </thead>
@@ -17,10 +18,25 @@
             <td><input [(ngModel)]="customer.lastName"></td>
             <td><input [(ngModel)]="customer.age"></td>
             <td><input [(ngModel)]="customer.bankDetails"></td>
-            <td><button (click)="onCustomerEditClicked(customer)" class="btn btn-success">Edit</button></td>
+            <td><button (click)="onCustomerSaveChangesClicked(customer)" class="btn btn-success">Save changes</button></td>
+            <td><button (click)="addTransaction(customer)" class="btn btn-success">Add transaction</button></td>
          </tr>
       </tbody>
    </table>
+</div>
+
+<div class="p-3 bg-light">
+   <div *ngFor="let customer of customers"  class="m-3">
+      <strong>{{customer.firstName}} {{customer.lastName}}: {{customer.id}}</strong>
+      <div *ngIf="customer.transactions.length > 0">
+         <div *ngFor="let transaction of customer.transactions">
+            {{transaction.name}}: R{{transaction.value}}
+         </div>
+      </div>
+      <div *ngIf="customer.transactions.length == 0">
+         Nothing!
+      </div>
+   </div>
 </div>
 
 <div class="card m-3 mt-5">

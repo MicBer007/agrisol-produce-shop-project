@@ -48,7 +48,7 @@
             </div>
          </div>
       </form>
-      <button (click)="onAddProductClicked()" class="btn btn-primary btn-lg mt-5" popovertarget="popover" type="submit">Add Product</button>o
+      <button (click)="onAddProductClicked()" class="btn btn-primary btn-lg mt-5" popovertarget="popover" type="submit">Add Product</button>
    </div>
 </div>
 
@@ -70,8 +70,8 @@
     </div>
  </div>
 
- <button (click)="addLinkClicked()" class="btn btn-primary mx-3">Add link</button>
- <button (click)="removeLinkClicked()" class="btn btn-primary">Remove link</button>
+ <button (click)="addLinkClicked()" class="btn btn-primary mx-3" [disabled]="addButtonShouldBeDisabled">Add link</button>
+ <button (click)="removeLinkClicked()" class="btn btn-primary" [disabled]="removeButtonShouldBeDisabled">Remove link</button>
 
  <div class="bg-light m-3 p-2 rounded">
    <div *ngFor="let productSupplier of productSuppliers">
@@ -79,5 +79,11 @@
      <div *ngFor="let product of productSupplier.products">
      --> {{product.name}}
      </div>
+   </div>
+ </div>
+
+ <div class="bg-light m-3 p-2 py-1 rounded" *ngIf="momentsCreated.length > 0">
+   <div class="m-1" *ngFor="let moment of momentsCreated">
+      {{moment}}
    </div>
  </div>

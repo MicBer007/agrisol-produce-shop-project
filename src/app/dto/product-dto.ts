@@ -1,3 +1,4 @@
+import { OrderDto } from "./order-dto";
 import { ProductSupplierDto } from "./product-supplier-dto";
 
 export class ProductDto {
@@ -7,4 +8,5 @@ export class ProductDto {
    inStock!: number;
    pictureName!: string;
    suppliers!: ProductSupplierDto[];
+   orders!: OrderDto[];
 }

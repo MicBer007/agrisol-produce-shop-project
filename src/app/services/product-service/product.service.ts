@@ -29,7 +29,7 @@ export class ProductService {
       }
     })
     if(!hasFoundMatch){
-      shopItems.push(new ProductModel(product.id, product.name, product.price, product.inStock, 0, product.picturePath, []))
+      shopItems.push(new ProductModel(product.id, product.name, product.price, product.inStock, 0, product.picturePath, [], []))
     }
 
     this.products$.next(shopItems)
@@ -47,8 +47,8 @@ export class ProductService {
       }));
   }
 
-  getAllWithSuppliers$() {
-    return this.httpService.get("https://localhost:7114/api/Product/Suppliers")
+  getAllWithRelatedData$() {
+    return this.httpService.get("https://localhost:7114/api/Product/WithRelated")
       .pipe(map(dto => {
         return (dto as ProductDto[]).map(productDto  => ProductEvolver.toModel(productDto));
       }));
@@ -74,6 +74,22 @@ export class ProductService {
 
   unlinkWithProductSupplier$(productSupplierId: string, productId: string) {
     return this.httpService.putWithoutBody("https://localhost:7114/api/Product/UnlinkSupplier?productId=" + productId + "&supplierId=" + productSupplierId);
+  }
+
+  linkWithOrder$(productId: string, orderId: string, amount: number) {
+    return this.httpService.putWithoutBody("https://localhost:7114/api/Product/LinkOrder?productId=" + productId + "&orderId=" + orderId + "&amount=" + amount);
+  }
+
+  unlinkWithOrder$(productId: string, orderId: string) {
+    return this.httpService.putWithoutBody("https://localhost:7114/api/Product/UnlinkOrder?productId=" + productId + "&orderId=" + orderId);
+  }
+
+  getMomentRelationshipCreated$(productId: string, productSupplierId: string){
+    return this.httpService.get("https://localhost:7114/api/ProductProductSupplierJoin/MomentCreated?productId=" + productId + "&productSupplierId=" + productSupplierId);
+  }
+
+  getProductAmountInOrder$(productId: string, orderId: string){
+    return this.httpService.get("https://localhost:7114/api/ProductOrderJoin/ProductAmount?productId=" + productId + "&orderId=" + orderId);
   }
 
 }

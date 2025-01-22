@@ -1,4 +1,4 @@
-import { TransactionModel } from "./transaction";
+import { OrderModel } from "./order";
 
 export class CustomerModel {
    id: string;
@@ -6,14 +6,14 @@ export class CustomerModel {
    lastName: string;
    age: number;
    bankDetails: string;
-   transactions: TransactionModel[];
+   orders: OrderModel[];
 
-   constructor(id: string, firstName: string, lastName: string, age: number, bankDetails: string, transactions: TransactionModel[]){
+   constructor(id: string, firstName: string, lastName: string, age: number, bankDetails: string, orders: OrderModel[]){
       this.id = id;
       this.firstName = firstName;
       this.lastName = lastName;
       this.age = age;
       this.bankDetails = bankDetails;
-      this.transactions = transactions;
+      this.orders = orders;
    }
 }

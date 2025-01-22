@@ -1,0 +1,6 @@
+<div class="bg-light m-3 p-2 rounded">
+   <div *ngFor="let customer of customers" class="m-1">
+      {{customer.firstName}} {{customer.lastName}}
+      <button class="btn btn-success" (click)="onViewCustomerClicked(customer)">View Customer</button>
+   </div>
+</div>

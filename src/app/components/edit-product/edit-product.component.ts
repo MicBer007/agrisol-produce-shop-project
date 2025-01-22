@@ -24,12 +24,14 @@ export class EditProductComponent {
   productSuppliers: ProductSupplierModel[] = [];
   products: ProductModel[] = [];
 
+  momentsCreated: string[] = [];
+
   constructor(private productService: ProductService, private productSupplierService: ProductSupplierService){
-    this.productService.getAllWithSuppliers$().subscribe(payload => {
+    this.productService.getAllWithRelatedData$().subscribe(payload => {
       this.products = payload;
       console.log(payload);
     });
-    this.productSupplierService.getAllWithProducts$().subscribe(payload => {
+    this.productSupplierService.getAllWithRelatedData$().subscribe(payload => {
       this.productSuppliers = payload;
       console.log(payload);
     });
@@ -53,16 +55,14 @@ export class EditProductComponent {
     }
 
     var picturePath = "assets/" + this.pictureName;
-    var productModel = new ProductModel("", this.name, parseInt(this.price), parseInt(this.stockAmount), 1, picturePath, []);
+    var productModel = new ProductModel("", this.name, parseInt(this.price), parseInt(this.stockAmount), 1, picturePath, [], []);
     this.productService.add$(productModel).subscribe(payload => {
       console.log(payload)
       this.products.push(ProductEvolver.toModel(payload as ProductDto));
     });
   }
 
-
-
-  onDeleteProductClicked(product: ProductModel){
+  onDeleteProductClicked(product: ProductModel) {
     this.productService.delete$(product.id).subscribe(payload => {
       console.log(payload);
       if(payload as boolean){
@@ -71,33 +71,58 @@ export class EditProductComponent {
     });
   }
 
-  onEditProductClicked(product: ProductModel){
+  onEditProductClicked(product: ProductModel) {
     this.productService.put$(product).subscribe(payload => {
       console.log(payload);
     });
   }
 
   selectedProductModel?: ProductModel = undefined;
-  setSelectedProduct(productModel: ProductModel){
+  setSelectedProduct(productModel: ProductModel) {
     this.selectedProductModel = productModel;
+    this.checkIfButtonsShouldBeEnabled();
   }
 
   selectedProductSupplierModel?: ProductSupplierModel = undefined;
-  setSelectedProductSupplier(productSupplierModel: ProductSupplierModel){
+  setSelectedProductSupplier(productSupplierModel: ProductSupplierModel) {
     this.selectedProductSupplierModel = productSupplierModel;
+    let id = this.selectedProductSupplierModel.id!;
+    this.momentsCreated = [];
+    this.selectedProductSupplierModel.products.forEach(p => this.productSupplierService.getMomentRelationshipCreated$(p.id, id).subscribe(payload => {
+      console.log(payload);
+      this.momentsCreated.push(payload.toString());
+    }))
+    this.checkIfButtonsShouldBeEnabled();
   }
 
-  addLinkClicked(){
+  addButtonShouldBeDisabled = true;
+  removeButtonShouldBeDisabled = true;
+  checkIfButtonsShouldBeEnabled() {
+    this.addButtonShouldBeDisabled = true;
+    this.removeButtonShouldBeDisabled = true;
+
+    if(this.selectedProductModel == undefined || this.selectedProductSupplierModel == undefined) return;
+
+    this.selectedProductSupplierModel.products.includes(this.selectedProductModel) ? this.removeButtonShouldBeDisabled = false : this.addButtonShouldBeDisabled = false;
+  }
+
+  addLinkClicked() {
+    this.addButtonShouldBeDisabled = true;
+    this.removeButtonShouldBeDisabled = true;
     this.productService.linkWithProductSupplier$(this.selectedProductSupplierModel?.id!, this.selectedProductModel?.id!).subscribe(payload => {
       console.log(payload);
       this.selectedProductSupplierModel!.products.push(this.products.find(p => p.id == this.selectedProductModel!.id)!);
+      this.checkIfButtonsShouldBeEnabled();
     });
   }
 
-  removeLinkClicked(){
+  removeLinkClicked() {
+    this.addButtonShouldBeDisabled = true;
+    this.removeButtonShouldBeDisabled = true;
     this.productService.unlinkWithProductSupplier$(this.selectedProductSupplierModel?.id!, this.selectedProductModel?.id!).subscribe(payload => {
       console.log(payload);
       this.selectedProductSupplierModel?.products.splice(this.selectedProductSupplierModel?.products.indexOf(this.selectedProductModel!), 1);
+      this.checkIfButtonsShouldBeEnabled();
     });
   }
 

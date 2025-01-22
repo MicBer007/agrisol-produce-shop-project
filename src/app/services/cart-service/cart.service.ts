@@ -35,7 +35,7 @@ export class CartService {
       }
     })
     if(!hasFoundMatch){
-      cartList.push(new ProductModel(shopItem.id, shopItem.name, shopItem.price, shopItem.inStock, shopItem.amount, shopItem.picturePath, []))
+      cartList.push(new ProductModel(shopItem.id, shopItem.name, shopItem.price, shopItem.inStock, shopItem.amount, shopItem.picturePath, [], []))
     }
     
     this.cart$.next(cartList)

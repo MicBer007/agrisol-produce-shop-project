@@ -1,0 +1,25 @@
+<div class="bg-light p-2 m-3 rounded">
+   <div>
+      Customer: {{customer.firstName}} {{customer.lastName}}
+   </div>
+   <div>
+      Age: {{customer.age}}
+   </div>
+   <div>
+      Details: {{customer.bankDetails}}
+   </div>
+</div>
+
+<div class="bg-light p-2 m-3 rounded" *ngIf="customer.orders.length > 0">
+   <div class="m-3">
+      <h1>Pending orders</h1>
+   </div>
+   <div class="m-2" *ngFor="let order of customer.orders">
+      {{orderStatusNames[order.status]}}
+      {{order.id}}
+      <div *ngFor="let orderProduct of order.orderProducts">
+         {{orderProduct.product.name}}: {{orderProduct.amount}}
+      </div>
+   </div>
+</div>
+

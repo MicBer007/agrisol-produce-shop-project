@@ -1,17 +1,13 @@
 import { Routes } from '@angular/router';
 import { HomeComponent } from './components/home/home.component';
+import { CustomersOverviewComponent } from './components/customers-overview/customers-overview.component';
+import { CustomerDetailComponent } from './components/customer-detail/customer-detail.component';
 import { ProductsComponent } from './components/products/products.component';
-import { CartComponent } from './components/cart/cart.component';
-import { EditProductComponent } from './components/edit-product/edit-product.component';
-import { CustomerViewComponent } from './components/customer-view/customer-view.component';
-import { TransactionComponent } from './components/transaction/transaction.component';
 
 export const routes: Routes = [
    {path: "home", component: HomeComponent},
+   {path: "customers", component: CustomersOverviewComponent},
+   {path: "customers/:id", component: CustomerDetailComponent},
    {path: "products", component: ProductsComponent},
-   {path: "cart", component: CartComponent},
-   {path: "edit", component: EditProductComponent},
-   {path: "customer", component: CustomerViewComponent},
-   {path: "transactions", component: TransactionComponent},
-   {path: '',   redirectTo: '/products', pathMatch: 'full'}
+   {path: '',   redirectTo: '/home', pathMatch: 'full'}
 ];

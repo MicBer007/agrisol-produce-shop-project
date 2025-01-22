@@ -21,8 +21,8 @@ export class ProductSupplierService {
       }));
   }
 
-  getAllWithProducts$() {
-    return this.httpService.get("https://localhost:7114/api/ProductSupplier/Products")
+  getAllWithRelatedData$() {
+    return this.httpService.get("https://localhost:7114/api/ProductSupplier/WithRelated")
       .pipe(map(dto => {
         return (dto as ProductSupplierDto[]).map(productSupplierDto => ProductSupplierEvolver.toModel(productSupplierDto));
       }));
@@ -49,6 +49,10 @@ export class ProductSupplierService {
 
   unlinkWithProduct$(productSupplierId: string, productId: string){
     return this.httpService.putWithoutBody("https://localhost:7114/api/ProductSupplier/UnlinkProduct?supplierId=" + productSupplierId + "&productId=" + productId);
+  }
+
+  getMomentRelationshipCreated$(productId: string, productSupplierId: string){
+    return this.httpService.get("https://localhost:7114/api/ProductProductSupplierJoin/MomentCreated?productId=" + productId + "&productSupplierId=" + productSupplierId);
   }
   
 }

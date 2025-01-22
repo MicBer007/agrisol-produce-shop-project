@@ -20,8 +20,8 @@ export class CustomerService {
       }));
   }
 
-  getAllWithTransactions$() {
-    return this.httpService.get("https://localhost:7114/api/Customer/Transactions")
+  getAllWithRelatedData$() {
+    return this.httpService.get("https://localhost:7114/api/Customer/WithRelated")
       .pipe(map(customerList => {
         return (customerList as CustomerDto[]).map(customerDto => CustomerEvolver.toModel(customerDto))
       }));
@@ -38,7 +38,6 @@ export class CustomerService {
 
   put$(customerModel: CustomerModel){
     var dto = CustomerEvolver.toDto(customerModel);
-    console.log(dto);
     return this.httpService.put("https://localhost:7114/api/Customer", dto);
   }
 

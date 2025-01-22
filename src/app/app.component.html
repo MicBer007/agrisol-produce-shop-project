@@ -1,4 +1,4 @@
-<nav class="navbar navbar-expand-lg bg-success">
+<nav class="navbar navbar-expand-sm bg-success">
   <div class="container-fluid">
     <a class="navbar-brand" href="#">Vegetable Shop</a>
     <button class="navbar-toggler" (click)="isNavbarCollapsed=!isNavbarCollapsed">
@@ -10,19 +10,10 @@
           <a class="nav-link" aria-current="page" routerLink="/home" routerLinkActive="active" (click)="isNavbarCollapsed=false">Home</a>
         </li>
         <li class="nav-item">
+          <a class="nav-link" aria-current="page" routerLink="/customers" routerLinkActive="active" (click)="isNavbarCollapsed=false">Customers</a>
+        </li>
+        <li class="nav-item">
           <a class="nav-link" aria-current="page" routerLink="/products" routerLinkActive="active" (click)="isNavbarCollapsed=false">Products</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" aria-current="page" routerLink="/cart" routerLinkActive="active" (click)="isNavbarCollapsed=false">Cart</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" aria-current="page" routerLink="/edit" routerLinkActive="active" (click)="isNavbarCollapsed=false">Edit</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" aria-current="page" routerLink="/customer" routerLinkActive="active" (click)="isNavbarCollapsed=false">View Customers</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" aria-current="page" routerLink="/transactions" routerLinkActive="active" (click)="isNavbarCollapsed=false">Transactions</a>
         </li>
       </ul>
     </div>

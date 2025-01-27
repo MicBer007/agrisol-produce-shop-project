@@ -1,11 +1,9 @@
-import { OrderProductDto } from "./order-product-dto";
-
-export class OrderDto {
+export class OrderWithoutOrderProductsDto {
    orderId?: string;
    orderStatus!: string;
    timeCarted?: Date;
    timePayed?: Date;
    timeDelivered?: Date;
    customerId!: string;
-   orderProducts!: OrderProductDto[];
+   amounts!: number[];
 }

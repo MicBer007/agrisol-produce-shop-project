@@ -1,7 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
 import { CommonModule } from '@angular/common';
-import { CartService } from './services/cart-service/cart.service';
 
 @Component({
   selector: 'app-root',
@@ -10,11 +9,6 @@ import { CartService } from './services/cart-service/cart.service';
   styleUrl: './app.component.css'
 })
 
-export class AppComponent implements OnInit {
-  cartLength = 0;
+export class AppComponent {
   isNavbarCollapsed = false;
-  constructor(private cartService: CartService){ }
-  ngOnInit(): void {
-    this.cartService.cart$.subscribe(payload => this.cartLength = payload.length);
-  }
 }

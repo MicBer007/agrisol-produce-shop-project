@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
-import { HttpService } from '../http.service';
-import { CustomerModel } from '../../models/customer';
+import { HttpService } from '../http-service/http.service';
 import { CustomerDto } from '../../dto/customer-dto';
 import { CustomerEvolver } from '../../evolvers/customer-evolver';
 import { map } from 'rxjs';
+import { CustomerModel } from '../../models/customer';
 
 @Injectable({
   providedIn: 'root'
@@ -12,7 +12,6 @@ export class CustomerService {
 
   constructor(private httpService: HttpService) { }
 
-  //CRUD
   getAll$() {
     return this.httpService.get("https://localhost:7114/api/Customer")
       .pipe(map(customerList => {
@@ -20,10 +19,10 @@ export class CustomerService {
       }));
   }
 
-  getAllWithRelatedData$() {
-    return this.httpService.get("https://localhost:7114/api/Customer/WithRelated")
-      .pipe(map(customerList => {
-        return (customerList as CustomerDto[]).map(customerDto => CustomerEvolver.toModel(customerDto))
+  getCustomerWithOrder$(customerId: string) {
+    return this.httpService.get("https://localhost:7114/api/Customer/Orders/" + customerId)
+      .pipe(map(customer => {
+        return CustomerEvolver.toModel(customer as CustomerDto)
       }));
   }
   

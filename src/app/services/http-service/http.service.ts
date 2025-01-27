@@ -1,15 +1,19 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { SerializerService } from './serializer.service';
+import { map } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
 export class HttpService {
   
-  constructor(private httpService: HttpClient) { }
+  constructor(private httpService: HttpClient, private serializer: SerializerService) { }
 
   public get(route: string) {
-    return this.httpService.get(route);
+    return this.httpService.get(route).pipe(map(payload => {
+      return this.serializer.deserialize(payload);
+    }));
   }
 
   public post (route: string, payload: any) {
@@ -18,7 +22,7 @@ export class HttpService {
         'content-type':  'application/json'        
       })
     } 
-    return this.httpService.post(route, payload, httpOptions);
+    return this.httpService.post(route, this.serializer.serialize(payload), httpOptions);
   }
   
   public delete (route: string, id: any) {

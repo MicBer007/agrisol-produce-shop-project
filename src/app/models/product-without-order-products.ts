@@ -1,7 +1,6 @@
-import { OrderProductModel } from "./order-product";
 import { ProductSupplierModel } from "./product-supplier";
 
-export class ProductModel{
+export class ProductWithoutOrderProductsModel{
    name: string;
    price: number;
    id: string;
@@ -9,9 +8,8 @@ export class ProductModel{
    amount: number
    picturePath: string;
    suppliers: ProductSupplierModel[];
-   orderProducts: OrderProductModel[];
 
-   constructor(id: string, name: string, price: number, inStock: number, amount: number, picturePath: string, suppliers: ProductSupplierModel[], orderProducts: OrderProductModel[]){
+   constructor(id: string, name: string, price: number, inStock: number, amount: number, picturePath: string, suppliers: ProductSupplierModel[]){
       this.id = id;
       this.name = name;
       this.price = price;
@@ -19,7 +17,6 @@ export class ProductModel{
       this.amount = amount;
       this.picturePath = picturePath;
       this.suppliers = suppliers;
-      this.orderProducts = orderProducts;
    }
 
 }

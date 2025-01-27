@@ -18,8 +18,9 @@
       {{orderStatusNames[order.status]}}
       {{order.id}}
       <div *ngFor="let orderProduct of order.orderProducts">
-         {{orderProduct.product.name}}: {{orderProduct.amount}}
+         {{orderProduct.product.name}}: {{orderProduct.quantity}}
       </div>
    </div>
 </div>
 
+<button (click)="onCreateNewCustomerClicked()" class="btn btn-lg btn-success">Create new customer</button>

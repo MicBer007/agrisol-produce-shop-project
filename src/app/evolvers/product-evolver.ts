@@ -1,13 +1,14 @@
 import { ProductDto } from "../dto/product-dto";
 import { ProductModel } from "../models/product";
-import { OrderEvolver } from "./order-evolver";
+import { OrderProductEvolver } from "./order-product-evolver";
 import { ProductSupplierEvolver } from "./product-supplier-evolver";
 
 export class ProductEvolver {
 
    static toModel(dto: ProductDto): ProductModel {
+      dto.suppliers.forEach(s => console.log("supplier: " + s));
       var supplierModels = dto.suppliers.map(supplier => ProductSupplierEvolver.toModel(supplier));
-      var orderModels = dto.orders.map(orderDto => OrderEvolver.toModel(orderDto));
+      var orderProductModels = dto.orderProducts.map(orderProductDto => OrderProductEvolver.toModel(orderProductDto));
       var model: ProductModel = {
          id: dto.productId ? dto.productId : "",
          name: dto.name,
@@ -16,7 +17,7 @@ export class ProductEvolver {
          amount: 1,
          picturePath: "assets/" + dto.pictureName,
          suppliers: supplierModels,
-         orders: orderModels
+         orderProducts: orderProductModels
       };
       return model;
    }
@@ -24,14 +25,14 @@ export class ProductEvolver {
    static toDto(model: ProductModel): ProductDto {
       var dtoPictureName = model.picturePath.split("/")[1];
       var supplierDtos = model.suppliers.map(supplier => ProductSupplierEvolver.toDto(supplier));
-      var orderDtos = model.orders.map(orderModel => OrderEvolver.toDto(orderModel));
+      var orderProductDtos = model.orderProducts.map(orderProductModel => OrderProductEvolver.toDto(orderProductModel));
       var dto: ProductDto = {
          name: model.name,
          price: model.price,
          inStock: model.inStock,
          pictureName: dtoPictureName,
          suppliers: supplierDtos,
-         orders: orderDtos
+         orderProducts: orderProductDtos
       };
       dto.productId = (model.id == "" ? undefined: model.id);
       return dto;

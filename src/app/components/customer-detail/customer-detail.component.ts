@@ -20,14 +20,13 @@ export class CustomerDetailComponent {
 
   ngOnInit(): void {
     const id = this.route.snapshot.paramMap.get('id');
-    this.customerService.getAllWithRelatedData$().subscribe(payload => {
-      console.log(payload);
-      payload.forEach(customer => {
-        if(customer.id == id) {
-          this.customer = customer;
-        }
-      })
+    this.customerService.getCustomerWithOrder$(id!).subscribe(payload => {
+      this.customer = payload;
     });
+  }
+
+  onCreateNewCustomerClicked(){
+    this.customerService.add$(new CustomerModel("", "Jeffery", "Ridge", 10, "thingy", this.customer.orders));
   }
 
 }

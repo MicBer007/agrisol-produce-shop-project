@@ -1,35 +1,33 @@
 import { OrderDto } from "../dto/order-dto";
+import { OrderWithoutOrderProductsDto } from "../dto/order-without-order-products-dto";
 import { OrderModel } from "../models/order";
 import { OrderStatus } from "../models/order-status";
-import { OrderProductEvolver } from "./order-product-evolver";
+import { OrderWithoutOrderProductModel } from "../models/order-without-order-products";
 
-export class OrderEvolver{
+export class OrderWithoutOrderProductsEvolver{
 
-   static toModel(dto: OrderDto): OrderModel {
-      var orderProductModels = dto.orderProducts.map(oP => OrderProductEvolver.toModel(oP));
+   static toModel(dto: OrderWithoutOrderProductsDto): OrderWithoutOrderProductModel {
       var orderStatusAsEnum = OrderStatus[dto.orderStatus as keyof typeof OrderStatus];
-      var model: OrderModel = {
+      var model: OrderWithoutOrderProductModel = {
          id: dto.orderId,
          customerId: dto.customerId,
          status: orderStatusAsEnum,
          timeCarted: dto.timeCarted,
          timePayed: dto.timePayed,
-         timeDelivered: dto.timeDelivered,
-         orderProducts: orderProductModels
+         timeDelivered: dto.timeDelivered
       }
       return model;
    }
 
-   static toDto(model: OrderModel): OrderDto {
+   static toDto(model: OrderWithoutOrderProductModel): OrderWithoutOrderProductsDto {
       var orderStatusAsString = model.status.toString();
-      var orderProductDtos = model.orderProducts.map(oP => OrderProductEvolver.toDto(oP));
-      var dto: OrderDto = {
+      var dto: OrderWithoutOrderProductsDto = {
          orderStatus: orderStatusAsString,
          timeCarted: model.timeCarted,
          timePayed: model.timePayed,
          timeDelivered: model.timeDelivered,
          customerId: model.customerId,
-         orderProducts: orderProductDtos
+         amounts: []
       }
       dto.orderId = (model.id == "" ? undefined: model.id);
       return dto;

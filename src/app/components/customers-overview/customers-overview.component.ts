@@ -17,9 +17,7 @@ export class CustomersOverviewComponent implements OnInit {
   constructor(private customerService: CustomerService, private router: Router) { }
 
   ngOnInit(): void {
-    
     this.customerService.getAll$().subscribe(payload => {
-      console.log(payload);
       this.customers = payload;
     })
   }

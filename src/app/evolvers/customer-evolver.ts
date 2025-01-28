@@ -3,29 +3,44 @@ import { CustomerModel } from "../models/customer";
 import { OrderEvolver } from "./order-evolver";
 
 export class CustomerEvolver {
+
    static toModel(customerDto: CustomerDto): CustomerModel {
-      var orderModels = customerDto.orders.map(t => OrderEvolver.toModel(t));
-      var model: CustomerModel = {
-         id: customerDto.customerId ? customerDto.customerId: "",
-         firstName: customerDto.firstName,
-         lastName: customerDto.lastName,
-         age: customerDto.age,
-         bankDetails: customerDto.bankDetails,
-         orders: orderModels
-      }
+      var mappings: Map<Object, Object> = new Map<Object, Object>();
+      var customer: CustomerModel = this.toModelSmart(customerDto, mappings);
+      return customer;
+   }
+   
+   static toDto(model: CustomerModel): CustomerDto {
+      var mappings: Map<Object, Object> = new Map<Object, Object>();
+      var customer: CustomerDto = this.toDtoSmart(model, mappings);
+      return customer;
+   }
+   
+   static toModelSmart(dto: CustomerDto, preMappings: Map<Object, Object>): CustomerModel {
+      if(preMappings.has(dto)) return preMappings.get(dto) as CustomerModel;
+   
+      var model: CustomerModel = new CustomerModel(dto.customerId ? dto.customerId: "", dto.firstName, dto.lastName, dto.age, dto.bankDetails, []);
+      preMappings.set(dto, model);
+
+      model.orders = dto.orders.map(t => OrderEvolver.toModelSmart(t, preMappings));
       return model;
    }
    
-   static toDto(customerModel: CustomerModel): CustomerDto {
-      var orderDtos = customerModel.orders.map(t => OrderEvolver.toDto(t));
-      var customerDto: CustomerDto = {
-         firstName: customerModel.firstName,
-         lastName: customerModel.lastName,
-         age: customerModel.age,
-         bankDetails: customerModel.bankDetails,
-         orders: orderDtos
+   static toDtoSmart(model: CustomerModel, preMappings: Map<Object, Object>): CustomerDto {
+      if(preMappings.has(model)) return preMappings.get(model) as CustomerDto;
+
+      var dto: CustomerDto = {
+         firstName: model.firstName,
+         lastName: model.lastName,
+         age: model.age,
+         bankDetails: model.bankDetails,
+         orders: []
       }
-      customerDto.customerId = (customerModel.id == "" ? undefined: customerModel.id);
-      return customerDto;
+      dto.customerId = (model.id == "" ? undefined: model.id);
+      preMappings.set(model, dto);
+
+      dto.orders = model.orders.map(t => OrderEvolver.toDtoSmart(t, preMappings));
+      return dto;
    }
+
 }

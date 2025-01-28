@@ -6,9 +6,9 @@ export class ProductSupplierModel {
    name!: string;
    products!: ProductModel[];
       
-   constructor(id: string, name: string){
+   constructor(id: string, name: string, products: ProductModel[]){
       this.id = id;
       this.name = name;
-      this.products = [];
+      this.products = products;
    }
 }

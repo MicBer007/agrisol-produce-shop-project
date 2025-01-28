@@ -15,6 +15,7 @@ export class CustomerService {
   getAll$() {
     return this.httpService.get("https://localhost:7114/api/Customer")
       .pipe(map(customerList => {
+        console.log(customerList);
         return (customerList as CustomerDto[]).map(customerDto => CustomerEvolver.toModel(customerDto))
       }));
   }
@@ -22,6 +23,7 @@ export class CustomerService {
   getCustomerWithOrder$(customerId: string) {
     return this.httpService.get("https://localhost:7114/api/Customer/Orders/" + customerId)
       .pipe(map(customer => {
+        console.log(customer);
         return CustomerEvolver.toModel(customer as CustomerDto)
       }));
   }

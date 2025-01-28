@@ -3,6 +3,7 @@ import { ActivatedRoute } from '@angular/router';
 import { CustomerService } from '../../services/customer-service/customer.service';
 import { CustomerModel } from '../../models/customer';
 import { CommonModule } from '@angular/common';
+import { OrderModel } from '../../models/order';
 
 @Component({
   selector: 'app-customer-detail',
@@ -26,7 +27,7 @@ export class CustomerDetailComponent {
   }
 
   onCreateNewCustomerClicked(){
-    this.customerService.add$(new CustomerModel("", "Jeffery", "Ridge", 10, "thingy", this.customer.orders));
+    this.customerService.add$(new CustomerModel("", "Jeffery", "Ridge", 10, "thingy", [])).subscribe();
   }
 
 }

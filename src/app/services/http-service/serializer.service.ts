@@ -5,19 +5,17 @@ import { Injectable } from '@angular/core';
 })
 export class SerializerService {
 
-  private objectMap = new Map<object, number>();
+  private objectMap = new Map<object, string>();
   private idCounter = 0;
 
   private jsonObjectIdFieldName = "objId";
 
   serialize(obj: any): any {
-    console.log("Serializing!");
     this.objectMap.clear();
     this.idCounter = 0;
-    let object: any = this.serializeObject(obj);
-    console.log(obj);
-    console.log(object);
-    return object;
+    var obj: any = this.serializeObject(obj);
+    console.log(JSON.stringify(obj));
+    return obj;
   }
 
   private serializeObject(obj: any): any {
@@ -32,7 +30,7 @@ export class SerializerService {
     }
 
     const id = this.idCounter++;
-    this.objectMap.set(obj, id);
+    this.objectMap.set(obj, "obj_" + id);
 
     const serializedObj: any = { [this.jsonObjectIdFieldName]: "obj_" + id };
     for (const key of Object.keys(obj)) {

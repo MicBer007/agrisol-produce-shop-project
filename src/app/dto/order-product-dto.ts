@@ -1,8 +1,8 @@
-import { OrderWithoutOrderProductsDto } from "./order-without-order-products-dto";
-import { ProductWithoutOrderProductsDto } from "./product-without-order-products-dto";
+import { OrderDto } from "./order-dto";
+import { ProductDto } from "./product-dto";
 
 export class OrderProductDto {
-   product!: ProductWithoutOrderProductsDto;
-   order!: OrderWithoutOrderProductsDto;
+   product?: ProductDto;
+   order?: OrderDto;
    quantity!: number;
 }

@@ -15,10 +15,9 @@
       <h1>Pending orders</h1>
    </div>
    <div class="m-2" *ngFor="let order of customer.orders">
-      {{orderStatusNames[order.status]}}
-      {{order.id}}
+      {{order.id}}: {{orderStatusNames[order.status]}}
       <div *ngFor="let orderProduct of order.orderProducts">
-         {{orderProduct.product.name}}: {{orderProduct.quantity}}
+          - {{orderProduct.product?.name}}: {{orderProduct.quantity}}
       </div>
    </div>
 </div>

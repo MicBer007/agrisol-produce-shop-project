@@ -1,5 +1,5 @@
 import { OrderProductModel } from "./order-product";
-import { ProductSupplierModel } from "./product-supplier";
+import { ProductSupplierJoinModel } from "./product-supplier-join";
 
 export class ProductModel{
    name: string;
@@ -8,17 +8,17 @@ export class ProductModel{
    inStock: number
    amount: number
    picturePath: string;
-   suppliers: ProductSupplierModel[];
+   productSupplierJoins: ProductSupplierJoinModel[];
    orderProducts: OrderProductModel[];
 
-   constructor(id: string, name: string, price: number, inStock: number, amount: number, picturePath: string, suppliers: ProductSupplierModel[], orderProducts: OrderProductModel[]){
+   constructor(id: string, name: string, price: number, inStock: number, amount: number, picturePath: string, productSupplierJoins: ProductSupplierJoinModel[], orderProducts: OrderProductModel[]){
       this.id = id;
       this.name = name;
       this.price = price;
       this.inStock = inStock;
       this.amount = amount;
       this.picturePath = picturePath;
-      this.suppliers = suppliers;
+      this.productSupplierJoins = productSupplierJoins;
       this.orderProducts = orderProducts;
    }
 

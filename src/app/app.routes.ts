@@ -1,9 +1,11 @@
 import { Routes } from '@angular/router';
-import { CustomersOverviewComponent } from './components/customers-overview/customers-overview.component';
-import { CustomerDetailComponent } from './components/customer-detail/customer-detail.component';
+import { CustomerOverviewComponent } from './components/customer-overview/customer-overview.component';
+import { CustomerOrderViewComponent } from './components/customer-order-view/customer-order-view.component';
+import { CustomerLoginComponent } from './components/customer-login/customer-login.component';
 
 export const routes: Routes = [
-   {path: "customers", component: CustomersOverviewComponent},
-   {path: "customers/:id", component: CustomerDetailComponent},
-   {path: '',   redirectTo: '/customers', pathMatch: 'full'}
+   {path: "customer-overview", component: CustomerOverviewComponent},
+   {path: "orders", component: CustomerOrderViewComponent},
+   {path: "login", component: CustomerLoginComponent},
+   {path: '',   redirectTo: '/login', pathMatch: 'full'}
 ];

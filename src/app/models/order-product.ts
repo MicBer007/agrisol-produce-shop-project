@@ -3,7 +3,7 @@ import { ProductModel } from "./product";
 export class OrderProductModel {
    product?: ProductModel;
    order?: OrderModel;
-   quantity: number;
+   quantity!: number;
 
    constructor(quantity: number, product?: ProductModel, order?: OrderModel){
       this.product = product;

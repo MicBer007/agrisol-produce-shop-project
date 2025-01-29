@@ -1,5 +1,5 @@
 import { OrderProductDto } from "./order-product-dto";
-import { ProductSupplierDto } from "./product-supplier-dto";
+import { ProductSupplierJoinDto } from "./product-supplier-join-dto";
 
 export class ProductDto {
    productId?: string; //id needs to be able to be set by the backend
@@ -7,6 +7,6 @@ export class ProductDto {
    price!: number;
    inStock!: number;
    pictureName!: string;
-   suppliers!: ProductSupplierDto[];
+   productSupplierJoins!: ProductSupplierJoinDto[];
    orderProducts!: OrderProductDto[];
 }

@@ -4,18 +4,37 @@ import { CustomerDto } from '../../dto/customer-dto';
 import { CustomerEvolver } from '../../evolvers/customer-evolver';
 import { map } from 'rxjs';
 import { CustomerModel } from '../../models/customer';
+import { Router } from '@angular/router';
 
 @Injectable({
   providedIn: 'root'
 })
 export class CustomerService {
 
-  constructor(private httpService: HttpService) { }
+  private loggedInCustomer: CustomerModel | undefined = undefined;
+
+  constructor(private httpService: HttpService, private router: Router) { }
+
+  getLoggedInCustomer(){
+    return this.loggedInCustomer;
+  }
+
+  logOut(){
+    this.loggedInCustomer = undefined;
+    console.log("Logging out...");
+  }
+
+  logInAsCustomerWithId(customerId: string){ //accreditationDetails CustomerLoginDetails
+    // this.getCustomerDetailsThroughLogin$(customer, accreditationDetails).subscribe(payload => {})
+    this.getCustomerWithOrder$(customerId).subscribe(payload => {
+      this.loggedInCustomer = payload;
+      this.router.navigateByUrl("customer-overview"); //TODO would prefer if the individual login components could decided what to do with the new logged-in customer, maybe as a runnable.
+    })
+  }
 
   getAll$() {
     return this.httpService.get("https://localhost:7114/api/Customer")
       .pipe(map(customerList => {
-        console.log(customerList);
         return (customerList as CustomerDto[]).map(customerDto => CustomerEvolver.toModel(customerDto))
       }));
   }
@@ -23,23 +42,22 @@ export class CustomerService {
   getCustomerWithOrder$(customerId: string) {
     return this.httpService.get("https://localhost:7114/api/Customer/Orders/" + customerId)
       .pipe(map(customer => {
-        console.log(customer);
         return CustomerEvolver.toModel(customer as CustomerDto)
       }));
   }
   
-  add$(customerModel: CustomerModel){
-    var customerDto = CustomerEvolver.toDto(customerModel);
-    return this.httpService.post("https://localhost:7114/api/Customer", customerDto);
-  }
+  // add$(customerModel: CustomerModel){
+  //   var customerDto = CustomerEvolver.toDto(customerModel);
+  //   return this.httpService.post("https://localhost:7114/api/Customer", customerDto);
+  // }
 
-  delete$(id: string){
-    return this.httpService.delete("https://localhost:7114/api/Customer/" + id, id);
-  }
+  // delete$(id: string){
+  //   return this.httpService.delete("https://localhost:7114/api/Customer/" + id, id);
+  // }
 
-  put$(customerModel: CustomerModel){
-    var dto = CustomerEvolver.toDto(customerModel);
-    return this.httpService.put("https://localhost:7114/api/Customer", dto);
-  }
+  // put$(customerModel: CustomerModel){
+  //   var dto = CustomerEvolver.toDto(customerModel);
+  //   return this.httpService.put("https://localhost:7114/api/Customer", dto);
+  // }
 
 }

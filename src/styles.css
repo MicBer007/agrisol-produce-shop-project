@@ -9,3 +9,12 @@ body {
    justify-content: center;
    align-items: center;
 }
+
+.data-div {
+   background-color: white;
+   padding: 6px;
+   padding-left: 12px;
+   margin: 10px;
+   border: 2px, solid, goldenrod;
+   border-radius: 6px;
+}

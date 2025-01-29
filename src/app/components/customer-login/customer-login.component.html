@@ -1,0 +1,11 @@
+<div class="data-div" *ngIf="loggedInCustomer != undefined">
+   You are currently logged in!
+   <button class="btn btn-success" (click)="onLogOutClicked()">Log out</button>
+</div>
+
+<div class="data-div">
+   <div *ngFor="let customer of customers" class="m-1">
+      {{customer.firstName}} {{customer.lastName}}
+      <button class="btn btn-success" (click)="onLogInAsCustomerClicked(customer)">Login as customer</button>
+   </div>
+</div>

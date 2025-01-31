@@ -18,3 +18,9 @@ body {
    border: 2px, solid, goldenrod;
    border-radius: 6px;
 }
+
+@media (any-hover: hover) {
+   .clickable:hover {
+     cursor:pointer;
+   }
+}

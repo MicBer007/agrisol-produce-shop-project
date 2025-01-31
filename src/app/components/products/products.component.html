@@ -1,0 +1,29 @@
+<div class="container mt-3">
+   <div class="row">
+     <div class="col-12 col-sm-6 col-lg-4" *ngFor="let product of products">
+       <div class="card produce-card my-2">
+         <img class="card-img-top" src="{{product.picturePath}}" alt="photo of product">
+         <div class="card-title">
+           <h2 class="card-title mt-2">{{product.name}}</h2>
+           <div>Selling for R{{product.price}}</div>
+         </div>
+         <div class="card-body">
+           <div class="container row pt-3">
+             <div class="col-12 col-md-9">
+               <input type="range" class="form-range" min="1" max="{{product.inStock}}" [(ngModel)]="product.amount" step="1" #slider>
+             </div>
+             <div class="col-12 col-md-3">
+               <span style="float: right">{{product.amount}}</span>
+             </div>
+             <div class="col-12 col-md-6 mt-3">
+               <button class="btn btn-success btn-lg" [disabled]="product.amount === 0 && product.inStock === 0" type="button">Buy</button>
+             </div>
+             <div class="col-12 col-md-6 mt-3">
+               <span class="badge text-bg-dark rounded-pill">{{product.inStock}} in stock</span>
+             </div>
+           </div>
+         </div>
+       </div>
+     </div>
+   </div>
+ </div>

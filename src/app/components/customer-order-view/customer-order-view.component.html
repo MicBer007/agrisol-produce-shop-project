@@ -1,23 +1,159 @@
-<div class="bg-light p-2 m-3 rounded">
-   <div>
-      Customer: {{customer.firstName}} {{customer.lastName}}
+
+<div class="container data-div" *ngIf="customer != undefined">
+   <div *ngIf="simplifiedOrders.length > 0">
+      <div class="m-3 mb-4">
+         <h1 class="order-page-title">Your Orders</h1>
+      </div>
+      
+      <!-- <table class="table table-responsive table-striped">
+            <thead>
+               <tr>
+                  <td>#</td>
+                  <td class="status-field">Status</td>
+                  <td>Value</td>
+                  <td>Products</td>
+               </tr>
+            </thead>
+            <tbody>
+               <tr *ngFor="let order of simplifiedOrders">
+                  <td>{{simplifiedOrders.indexOf(order) + 1}}</td>
+                  <td class="status-field"><span [ngClass] ="{'in-cart':order.status==0 ,'payed':order.status==1,'delivered':order.status==2}">{{orderStatusNames[order.status]}}</span></td>
+                  <td>R{{order.value}}</td>
+                  <td>
+                     <span class="order-item" *ngFor="let product of order.orderProducts | slice: 0: 5">
+                        {{product.productName}}
+                     </span>
+                     <span *ngIf="order.orderProducts.length > 5">
+                        ...
+                     </span>
+                  </td>
+               </tr>
+            </tbody>
+      </table> -->
+
+      <!-- <div class="container-fluid">
+         <div class="row">
+            <div class="col col-12 col-md-6 col-lg-4 order-section-outer">
+               <div class="order-section-inner">
+                  <div class="in-cart-section-header">In cart</div>
+                  <div class="section-body">
+                     <div class="order" *ngFor="let order of simplifiedOrders | filter: 'status': 0">
+                        Order
+                        <div *ngFor="let orderProduct of order.orderProducts">
+                           {{orderProduct.productName}}
+                        </div>
+                     </div>
+                  </div>
+               </div>
+            </div>
+            <div class="col col-12 col-md-6 col-lg-4 order-section-outer">
+               <div class="order-section-inner">
+                  <div class="payed-section-header">Payed</div>
+                  <div class="section-body">
+                     <div class="order" *ngFor="let order of simplifiedOrders | filter: 'status': 1">
+                        Order
+                        <ul>
+                           <li *ngFor="let orderProduct of order.orderProducts">{{orderProduct.productName}}</li>
+                        </ul>
+                     </div>
+                  </div>
+               </div>
+            </div>
+            <div class="col col-12 col-md-6 col-lg-4 order-section-outer">
+               <div class="order-section-inner">
+                  <div class="delivered-section-header">Delivered</div>
+                  <div class="section-body">
+                     <div class="order" *ngFor="let order of simplifiedOrders | filter: 'status': 2">
+                        Order
+                        <div *ngFor="let orderProduct of order.orderProducts">
+                           {{orderProduct.productName}}
+                        </div>
+                     </div>
+                  </div>
+               </div>
+            </div>
+         </div>
+      </div> -->
+
+      <div class="customer-order row" *ngFor="let order of simplifiedOrders">
+         <div class="col-2 no-gutters headings-box">
+            <div class="headings-box-order-id-tag">Status:</div>
+            <div class="headings-box-products-tag">Products:</div>
+         </div>
+         <div class="col-10 no-gutters order-info-box">
+            <div class="row order-details">
+               <div class="col-6 order-status">
+                  <span class="order-status-content" [ngClass]="{'in-cart': order.status==0 ,'payed': order.status==1,'delivered': order.status==2}">{{orderStatusNames[order.status]}}</span>
+               </div>
+               <div class="col-6 order-value-field">
+                  <span class="order-value-content">Total: R{{order.value}}</span>
+               </div>
+            </div>
+            <div class="row no-gutter order-items">
+               <div class="col-8">
+                  <div class="order-product-item-content info" *ngFor="let orderProduct of order.orderProducts">
+                     {{orderProduct.productName | titlecase}}  
+                  </div>
+               </div>
+               <div class="col-4 view-more-order-details-box">
+                  <a class="view-more-order-details-field clickable" (click)="onViewMoreDetailsClicked(order)" data-bs-toggle="offcanvas" data-bs-target="#offcanvasExample" aria-label="Close">View more details ⤑</a>
+               </div>
+            </div>
+         </div>
+      </div>
    </div>
-   <div>
-      Age: {{customer.age}}
-   </div>
-   <div>
-      Details: {{customer.bankDetails}}
+   <div *ngIf="simplifiedOrders.length == 0">
+      You have no orders for the moment!
    </div>
 </div>
 
-<div class="bg-light p-2 m-3 rounded" *ngIf="customer.orders.length > 0">
-   <div class="m-3">
-      <h1>Pending orders</h1>
+<div class="offcanvas offcanvas-end" *ngIf="orderToDetail" tabindex="-1" id="offcanvasExample" aria-labelledby="offcanvasExample">
+   <div class="offcanvas-header order-detail-header">
+     <h5 class="offcanvas-title" id="offcanvasExampleLabel">Order Details</h5>
+     <button class="btn-close" data-bs-dismiss="offcanvas"></button>
    </div>
-   <div class="m-2" *ngFor="let order of customer.orders">
-      {{order.id}}: {{orderStatusNames[order.status]}}
-      <div *ngFor="let orderProduct of order.orderProducts">
-          - {{orderProduct.product?.name}}: {{orderProduct.quantity}}
+   <div class="offcanvas-body order-detail-body">
+      <div>
+         <table class="table table-primary table-responsive table-striped">
+            <thead>
+               <tr class="order-detail-product-table-row">
+                  <td>Product</td>
+                  <td class="product-quantity">Quantity</td>
+                  <td class="product-individual-price">Indiv. Price</td>
+                  <td class="product-total">Total Price</td>
+               </tr>
+            </thead>
+            <tbody>
+               <tr class="order-detail-product-table-row" *ngFor="let orderProduct of orderToDetail.orderProducts">
+                  <td>{{orderProduct.product!.name}}</td>
+                  <td class="product-quantity">{{orderProduct.quantity}}</td>
+                  <td class="product-individual-price">R{{orderProduct.product!.price}}</td>
+                  <td class="product-total">R{{orderProduct.quantity * orderProduct.product!.price}}</td>
+               </tr>
+            </tbody>
+         </table>
+      </div>
+      <div class="order-detail-total-section">
+         <span class="order-detail-total-contents">
+            Total: {{total}}
+         </span>
+      </div>
+      <div class="order-detail-status-section">
+         <div>
+            Status: 
+            <span class="order-detail-status-field" [ngClass]="{'in-cart': orderToDetail.status==0 ,'payed': orderToDetail.status==1,'delivered': orderToDetail.status==2}">
+               {{orderStatusNames[orderToDetail.status]}}
+            </span>
+         </div>
+         <div *ngIf="orderToDetail.timeCarted!=null" class="order-status-time-field">
+            In cart since {{orderToDetail.timeCarted | date: "MMMM d, YYYY, 'at' h:mm"}}
+         </div>
+         <div *ngIf="orderToDetail.timePayed!=null" class="order-status-time-field">
+            Payed on {{orderToDetail.timePayed | date: "MMMM d, YYYY, 'at' h:mm"}}
+         </div>
+         <div *ngIf="orderToDetail.timeDelivered!=null" class="order-status-time-field">
+            Delivered on {{orderToDetail.timeDelivered | date: "MMMM d, YYYY, 'at' h:mm"}}
+         </div>
       </div>
    </div>
-</div>
+ </div>

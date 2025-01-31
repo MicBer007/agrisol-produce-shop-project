@@ -1,6 +1,10 @@
 <div class="data-div" *ngIf="customer != undefined">
-   You are logged in!
+   You are logged in as {{customer.firstName}} {{customer.lastName}}!
+   <button class="btn btn-sm btn-primary" (click)="onViewOrdersClicked()">View Orders</button>
 </div>
+
 <div class="data-div" *ngIf="customer == undefined">
-   You are not logged in!
+   <!-- TODO would be better to do this in a seperate, reusable component -->
+   You are not yet logged in!
+   <button class="btn btn-sm btn-warning" (click)="onGoToLoginPageClicked()">Go to login page</button>
 </div>

@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, OnInit } from '@angular/core';
 import { HttpService } from '../http-service/http.service';
 import { CustomerDto } from '../../dto/customer-dto';
 import { CustomerEvolver } from '../../evolvers/customer-evolver';
@@ -13,7 +13,9 @@ export class CustomerService {
 
   private loggedInCustomer: CustomerModel | undefined = undefined;
 
-  constructor(private httpService: HttpService, private router: Router) { }
+  constructor(private httpService: HttpService, private router: Router) {
+    this.logInAsCustomerWithId("4c004c7a-aa08-4714-9f2a-153dce79154d");
+  }
 
   getLoggedInCustomer(){
     return this.loggedInCustomer;
@@ -21,14 +23,13 @@ export class CustomerService {
 
   logOut(){
     this.loggedInCustomer = undefined;
-    console.log("Logging out...");
   }
 
   logInAsCustomerWithId(customerId: string){ //accreditationDetails CustomerLoginDetails
     // this.getCustomerDetailsThroughLogin$(customer, accreditationDetails).subscribe(payload => {})
     this.getCustomerWithOrder$(customerId).subscribe(payload => {
       this.loggedInCustomer = payload;
-      this.router.navigateByUrl("customer-overview"); //TODO would prefer if the individual login components could decided what to do with the new logged-in customer, maybe as a runnable.
+      this.router.navigateByUrl("login"); //TODO would prefer if the individual login components could decided what to do with the new logged-in customer, maybe as a runnable.
     })
   }
 

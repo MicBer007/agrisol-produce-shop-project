@@ -1,4 +1,3 @@
-
 <div class="container data-div" *ngIf="customer != undefined">
    <div *ngIf="simplifiedOrders.length > 0">
       <div class="m-3 mb-4">
@@ -96,7 +95,7 @@
                   </div>
                </div>
                <div class="col-4 view-more-order-details-box">
-                  <a class="view-more-order-details-field clickable" (click)="onViewMoreDetailsClicked(order)" data-bs-toggle="offcanvas" data-bs-target="#offcanvasExample" aria-label="Close">View more details ⤑</a>
+                  <a class="view-more-order-details-field clickable" type="button" (click)="onViewMoreDetailsClicked(order)" data-bs-toggle="offcanvas" data-bs-target="#offcanvasOrderDetail" aria-label="Close">View more details ⤑</a>
                </div>
             </div>
          </div>
@@ -107,12 +106,12 @@
    </div>
 </div>
 
-<div class="offcanvas offcanvas-end" *ngIf="orderToDetail" tabindex="-1" id="offcanvasExample" aria-labelledby="offcanvasExample">
+<div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasOrderDetail" aria-labelledby="offcanvasOrderDetailLabel">
    <div class="offcanvas-header order-detail-header">
-     <h5 class="offcanvas-title" id="offcanvasExampleLabel">Order Details</h5>
-     <button class="btn-close" data-bs-dismiss="offcanvas"></button>
+      <h5 class="offcanvas-title" id="offcanvasExampleLabel">Order Details</h5>
+      <button class="btn-close" data-bs-dismiss="offcanvas"></button>
    </div>
-   <div class="offcanvas-body order-detail-body">
+   <div class="offcanvas-body order-detail-body" *ngIf="orderToDetail">
       <div>
          <table class="table table-primary table-responsive table-striped">
             <thead>
@@ -125,7 +124,7 @@
             </thead>
             <tbody>
                <tr class="order-detail-product-table-row" *ngFor="let orderProduct of orderToDetail.orderProducts">
-                  <td>{{orderProduct.product!.name}}</td>
+                  <td>{{orderProduct.product!.name | titlecase}}</td>
                   <td class="product-quantity">{{orderProduct.quantity}}</td>
                   <td class="product-individual-price">R{{orderProduct.product!.price}}</td>
                   <td class="product-total">R{{orderProduct.quantity * orderProduct.product!.price}}</td>
@@ -156,4 +155,4 @@
          </div>
       </div>
    </div>
- </div>
+</div>

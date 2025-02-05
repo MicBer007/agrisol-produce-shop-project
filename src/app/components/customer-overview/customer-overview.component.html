@@ -32,6 +32,9 @@
                {{cartItem.product!.name}}
             </li>
          </ul>
+         <div class="cart-total">
+            <span>Total: {{cartValue}}</span>
+         </div>
          <button class="btn btn-large btn-success order-button" (click)="onOrderNowClicked()">Order now</button>
       </div>
       <div *ngIf="customer!.cart!.cartProducts.length == 0">

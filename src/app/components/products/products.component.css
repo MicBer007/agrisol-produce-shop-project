@@ -9,10 +9,6 @@
    text-align: right;
 }
 
-.no-suppliers{
-   color: red;
-}
-
 .modal{
    .product-detail-header{
       background-color: rgb(143, 243, 121);

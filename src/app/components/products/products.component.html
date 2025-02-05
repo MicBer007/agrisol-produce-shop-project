@@ -38,21 +38,10 @@
           Amount available: {{productToDetail.inStock}}
           </div>
         </div>
-        <div *ngIf="productToDetail.productSupplierJoins.length > 0">
-          <div>
-            Suppliers:
-          </div>
-          <ul>
-            <li *ngFor="let productSupplier of productToDetail.productSupplierJoins">{{productSupplier.supplier!.name}}</li>
-          </ul>
-        </div>
-        <div class="no-suppliers" *ngIf="productToDetail.productSupplierJoins.length == 0">
-          This product has no suppliers!
-        </div>
       </div>
-      <div class="modal-footer product-detail-footer" *ngIf="productToDetail.productSupplierJoins.length > 0">
-        <button class="btn btn-primary product-buy-button" (click)="onBuyDetailedProductClicked()" [disabled]="productBuyAmount == 0">Add to cart</button>
-        <input class="product-buy-input" type="number" [(ngModel)]="productBuyAmount" min="0" oninput="validity.valid||(value='');">
+      <div class="modal-footer product-detail-footer">
+        <button class="btn btn-primary product-buy-button" (click)="onAddDetailedProductToCartClicked(productToDetail)" [disabled]="productBuyAmount == 0" data-bs-toggle="modal" data-bs-target="#exampleModal">Add to cart</button>
+        <input class="product-buy-input" type="number" [(ngModel)]="productBuyAmount" min="0" max="{{productToDetail.inStock}}" oninput="validity.valid||(value='0');">
       </div>
     </div>
     <div class="modal-content" *ngIf="!productToDetail">

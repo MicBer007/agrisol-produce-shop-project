@@ -105,15 +105,6 @@
                font-size: 117%;
                border-radius: 4px;
             }
-            .in-cart{
-               background-color: rgb(243, 184, 57);
-            }
-            .payed{
-               background-color: rgb(65, 187, 235);
-            }
-            .delivered{
-               background-color: rgb(76, 212, 55);
-            }
          }
          .order-value-field{
             text-align: right;
@@ -192,20 +183,24 @@
          padding: 4px;
          border-radius: 5px;
       }
-      .in-cart{
-         background-color: rgb(243, 184, 57);
-      }
-      .payed{
-         background-color: rgb(65, 187, 235);
-      }
-      .delivered{
-         background-color: rgb(76, 212, 55);
-      }
       .order-status-time-field{
          margin-top: 20px;
          margin-left: 5px;
       }
    }
+}
+
+.cancelled{
+   background-color: rgb(242, 38, 34);
+}
+.in-transit{
+   background-color: rgb(65, 187, 235);
+}
+.payed{
+   background-color: rgb(243, 184, 57);
+}
+.delivered{
+   background-color: rgb(76, 212, 55);
 }
 
 .no-gutters {
@@ -217,4 +212,20 @@
      padding-right: 0;
      padding-left: 0;
    }
+}
+
+.loader {
+   align-self: center;
+   margin: 30px;
+   border: 4px solid #f3f3f3;
+   border-top: 4px solid #3498db;
+   border-radius: 50%;
+   width: 40px;
+   height: 40px;
+   animation: spin 1.4s linear infinite;
+}
+ 
+@keyframes spin {
+   0% { transform: rotate(0deg); }
+   100% { transform: rotate(360deg); }
 }

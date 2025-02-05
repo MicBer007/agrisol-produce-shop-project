@@ -4,7 +4,7 @@
     <button class="navbar-toggler" (click)="isNavbarCollapsed=!isNavbarCollapsed">
       <span class="navbar-toggler-icon"></span>
     </button>
-    <div class="collapse navbar-collapse" [ngClass] = "{show : isNavbarCollapsed}" id="navbarNav">
+    <div class="collapse navbar-collapse" [ngClass]="{show : isNavbarCollapsed}" id="navbarNav">
       <ul class="navbar-nav">
         <li class="nav-item">
           <a class="nav-link" aria-current="page" routerLink="/customer-overview" routerLinkActive="active" (click)="isNavbarCollapsed=false">Customers</a>
@@ -12,8 +12,8 @@
         <li class="nav-item">
           <a class="nav-link" aria-current="page" routerLink="/products" routerLinkActive="active" (click)="isNavbarCollapsed=false">Products</a>
         </li>
-        <li class="nav-item">
-          <a class="nav-link" aria-current="page" routerLink="/login" routerLinkActive="active" (click)="isNavbarCollapsed=false">Login</a>
+        <li [ngClass]="{'nav-button-right' : !isNavbarCollapsed}">
+          <a class="btn btn-primary" aria-current="page" routerLink="/login" routerLinkActive="active" (click)="isNavbarCollapsed=false">Log in</a>
         </li>
       </ul>
     </div>

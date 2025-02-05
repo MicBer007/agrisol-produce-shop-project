@@ -5,7 +5,7 @@ export class OrderModel {
    id?: string;
    customerId!: string;
    status: OrderStatus;
-   timeCarted?: Date;
+   timeCancelled?: Date;
    timePayed?: Date;
    timeDelivered?: Date;
    orderProducts: OrderProductModel[];
@@ -14,7 +14,7 @@ export class OrderModel {
       this.id = id;
       this.customerId = customerId;
       this.status = status;
-      this.timeCarted = dateCarted
+      this.timeCancelled = dateCarted
       this.timePayed = datePayed;
       this.timeDelivered = dateDelivered;
       this.orderProducts = orderProducts;

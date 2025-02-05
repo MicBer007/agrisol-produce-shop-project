@@ -3,6 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { ProductModel } from '../../models/product';
 import { FormsModule } from '@angular/forms';
 import { ProductService } from '../../services/product-service/product-service.service';
+import { CustomerService } from '../../services/customer-service/customer.service';
 
 
 @Component({
@@ -18,7 +19,7 @@ export class ProductsComponent implements OnInit {
   productToDetail?: ProductModel = undefined;
   productBuyAmount: number = 0;
 
-  constructor(private productService: ProductService){ }
+  constructor(private productService: ProductService, private customerService: CustomerService){ }
   
   ngOnInit(): void {
     this.productService.getAll$().subscribe(payload => {
@@ -27,16 +28,12 @@ export class ProductsComponent implements OnInit {
   }
 
   onDetailProductClicked(product: ProductModel) {
-    this.productToDetail = undefined; //because we are doing an API call, we don't want the result of the prvious query to show
-    
-    this.productService.getProductWithSuppliers$(product.id).subscribe(payload => {
-      this.productToDetail = payload;
-      this.productBuyAmount = 0;
-    });
+    this.productToDetail = product;
+    this.productBuyAmount = 0;
   }
 
-  onBuyDetailedProductClicked(){
-
+  onAddDetailedProductToCartClicked(product: ProductModel){
+    this.customerService.addProductToCartInAmount(product, this.productBuyAmount);
   }
 
 }

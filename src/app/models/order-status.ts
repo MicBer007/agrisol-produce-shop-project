@@ -1,5 +1,6 @@
 export enum OrderStatus {
-   InCart,
+   Cancelled,
+   InTransit,
    Payed,
    Delivered
 }

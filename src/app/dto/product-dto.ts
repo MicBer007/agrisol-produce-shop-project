@@ -1,3 +1,4 @@
+import { CartProductDto } from "./cart-product-dto";
 import { OrderProductDto } from "./order-product-dto";
 import { ProductSupplierJoinDto } from "./product-supplier-join-dto";
 
@@ -9,4 +10,5 @@ export class ProductDto {
    pictureName!: string;
    productSupplierJoins!: ProductSupplierJoinDto[];
    orderProducts!: OrderProductDto[];
+   cartProducts!: CartProductDto[];
 }

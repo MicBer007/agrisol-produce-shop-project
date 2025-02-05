@@ -12,16 +12,9 @@ export class ProductService {
   constructor(private httpService: HttpService) { }
 
   getAll$() {
-    return this.httpService.get("https://localhost:7114/api/Product")
+    return this.httpService.get("https://localhost:7114/api/product")
       .pipe(map(productList => {
         return (productList as ProductDto[]).map(productDto => ProductEvolver.toModel(productDto))
-      }));
-  }
-
-  getProductWithSuppliers$(productId: string) {
-    return this.httpService.get("https://localhost:7114/api/Product/Suppliers/" + productId)
-      .pipe(map(product => {
-        return ProductEvolver.toModel(product as ProductDto)
       }));
   }
 

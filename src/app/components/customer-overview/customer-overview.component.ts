@@ -19,6 +19,7 @@ export class CustomerOverviewComponent implements OnInit {
 
   ngOnInit(): void {
     this.customer = this.customerService.getLoggedInCustomer();
+    this.customer!.cart!.cartProducts.sort((a, b) => b.quantity - a.quantity);
   }
 
   onViewOrdersClicked(){
@@ -27,6 +28,10 @@ export class CustomerOverviewComponent implements OnInit {
 
   onGoToLoginPageClicked(){
     this.router.navigateByUrl("login");
+  }
+
+  onOrderNowClicked(){
+    this.customerService.checkoutCustomerCart();
   }
 
 }

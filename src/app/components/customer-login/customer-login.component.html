@@ -1,11 +1,22 @@
-<div class="data-div" *ngIf="loggedInCustomer != undefined">
-   You are currently logged in!
-   <button class="btn btn-success" (click)="onLogOutClicked()">Log out</button>
-</div>
-
-<div class="data-div">
-   <div *ngFor="let customer of customers" class="m-1">
-      {{customer.firstName}} {{customer.lastName}}
-      <button class="btn btn-success" (click)="onLogInAsCustomerClicked(customer)">Login as customer</button>
-   </div>
+<div class="modal fade" id="customerLoginModal" tabindex="-1" aria-labelledby="customerLoginModalLabel">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Log in</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <div *ngIf="isUserLoggedIn()">
+          You are already logged in!
+        </div>
+        <div *ngIf="!isUserLoggedIn()">
+          <div *ngFor="let customer of customers" class="m-1">
+            {{customer.firstName}} {{customer.lastName}}
+            <button class="btn btn-success" (click)="onLoginClicked(customer)" data-bs-dismiss="modal">Login
+              as customer</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>

@@ -38,12 +38,36 @@ export class CustomerOrderViewComponent {
   constructor(private customerService: CustomerService, private orderService: OrderService, private router: Router) {}
 
   ngOnInit(): void {
+    this.subscribeToLoggedInCustomerToGetCustomerOrders();
+  }
+
+  subscribeToLoggedInCustomerToGetCustomerOrders(){
     this.loading = true;
-    if(this.customerService.getLoggedInCustomer() == undefined) return;
-    this.orderService.getOrdersOfCustomer$(this.customerService.getLoggedInCustomer()!.id).subscribe(payload => {
+
+    this.customerService.getLoggedInCustomerObservable$().subscribe(customer => {
+
+      if(!customer) {
+        
+        this.loading = false;
+        this.orders = [];
+        this.simplifiedOrders = [];
+        return;
+
+      } else {
+
+        this.subscribeToGetCustomerOrders(customer);
+      }
+    });
+  }
+
+  subscribeToGetCustomerOrders(customer: CustomerModel){
+    this.orderService.getOrdersOfCustomer$(customer.id).subscribe(payload => {
+
       this.orders = payload;
+
       this.simplifiedOrders = this.orders.map(ToSimplifiedOrder);
       this.simplifiedOrders.sort((a, b) => a.status - b.status);
+
       this.loading = false;
     });
   }

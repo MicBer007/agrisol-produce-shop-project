@@ -10,7 +10,7 @@
         <div class="card-body">
           <div class="container row no-gutters pt-3">
             <div class="col-12 col-md-6">
-              <button class="btn btn-success btn-lg" (click)="onDetailProductClicked(product)" [disabled]="product.amount === 0 && product.inStock === 0" type="button" data-bs-toggle="modal" data-bs-target="#exampleModal">Buy</button>
+              <button class="btn btn-success btn-lg" (click)="onDetailProductClicked(product)" [disabled]="product.amount === 0 && product.inStock === 0" type="button" data-bs-toggle="modal" data-bs-target="#productAddToCartModal">Buy</button>
             </div>
             <div class="col-12 col-md-6 stock-amount-section">
               <span class="badge text-bg-dark rounded-pill stock-amount-field">{{product.inStock}} in stock</span>
@@ -22,7 +22,7 @@
   </div>
 </div>
 
-<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal fade" id="productAddToCartModal" tabindex="-1" aria-labelledby="productAddToCartModalLabel" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered">
     <div class="modal-content" *ngIf="productToDetail">
       <div class="modal-header product-detail-header">
@@ -40,7 +40,7 @@
         </div>
       </div>
       <div class="modal-footer product-detail-footer">
-        <button class="btn btn-primary product-buy-button" (click)="onAddDetailedProductToCartClicked(productToDetail)" [disabled]="productBuyAmount == 0" data-bs-toggle="modal" data-bs-target="#exampleModal">Add to cart</button>
+        <button class="btn btn-primary product-buy-button" (click)="onAddDetailedProductToCartClicked(productToDetail)" [disabled]="productBuyAmount == 0" data-bs-toggle="modal" data-bs-target="#productAddToCartModal">Add to cart</button>
         <input class="product-buy-input" type="number" [(ngModel)]="productBuyAmount" min="0" max="{{productToDetail.inStock}}" oninput="validity.valid||(value='0');">
       </div>
     </div>

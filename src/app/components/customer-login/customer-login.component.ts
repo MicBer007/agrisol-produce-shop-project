@@ -13,24 +13,24 @@ export class CustomerLoginComponent {
 
   customers: CustomerModel[] = [];
 
-  loggedInCustomer?: CustomerModel = undefined;
-
   constructor(private customerService: CustomerService) { }
 
   ngOnInit(): void {
-    this.customerService.getAll$().subscribe(payload => {
+    this.customerService.getAllCustomers$().subscribe(payload => {
       this.customers = payload;
     })
-    this.loggedInCustomer = this.customerService.getLoggedInCustomer();
   }
   
-  onLogInAsCustomerClicked(customer: CustomerModel) {
-    this.customerService.logInAsCustomerWithId(customer.id);//TODO with accreditaion details from login form
+  onLoginClicked(customer: CustomerModel) {
+    this.customerService.loginAsCustomerWithId(customer.id);
   }
 
-  onLogOutClicked(){
-    this.customerService.logOut();
-    this.loggedInCustomer = undefined;
+  onLogoutClicked(){
+    this.customerService.logout();
+  }
+
+  isUserLoggedIn(){
+    return this.customerService.isUserLoggedIn();
   }
   
 }

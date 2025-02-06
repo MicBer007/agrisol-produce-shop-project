@@ -19,6 +19,10 @@ body {
    border-radius: 6px;
 }
 
+.clickable{
+   cursor: pointer;
+}
+
 @media (any-hover: hover) {
    .clickable:hover {
      cursor:pointer;

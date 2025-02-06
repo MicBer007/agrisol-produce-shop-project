@@ -7,32 +7,6 @@
    margin-top: 10px;
    margin-bottom: 20px;
 }
-.cart-header{
-   background-color: rgb(234, 234, 234);
-}
-.cart-items-list{
-   margin-top: 20px;
-   margin-left: 11px;
-   margin-bottom: 30px;
-}
-.order-button{
-   position:absolute;
-   right:36%;
-}
-.cart-total{
-   margin-top: 10px;
-   margin-bottom: 30px;
-   text-align: right;
-   > span{
-      border-bottom-color: rgb(176, 206, 216);
-      border-top-color: rgb(176, 206, 216);
-      border-bottom-width: 1px;
-      border-top-width: 1px;
-      border-bottom-style: solid;
-      border-top-style: solid;
-   }
-}
-
 .customer-overview-panel {
    background-color: white;
    padding: 6px;

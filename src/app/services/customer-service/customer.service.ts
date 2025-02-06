@@ -1,107 +1,109 @@
 import { Injectable } from '@angular/core';
-import { HttpService } from '../http-service/http.service';
-import { CustomerDto } from '../../dto/customer-dto';
-import { CustomerEvolver } from '../../evolvers/customer-evolver';
-import { map } from 'rxjs';
+import { BehaviorSubject } from 'rxjs';
 import { CustomerModel } from '../../models/customer';
-import { Router } from '@angular/router';
 import { ProductModel } from '../../models/product';
 import { CartProductModel } from '../../models/cart-product';
-import { AddProductToCartRequestDto } from '../../dto/add-product-to-cart-request-dto';
+import { CustomerApiService } from './customer-api.service';
+import { CartModel } from '../../models/cart';
 
 @Injectable({
   providedIn: 'root'
 })
 export class CustomerService {
 
-  private loggedInCustomer: CustomerModel | undefined = undefined;
+  private loggedInCustomer$: BehaviorSubject<CustomerModel | undefined> = new BehaviorSubject<CustomerModel | undefined>(undefined);
 
-  constructor(private httpService: HttpService, private router: Router) {
-    this.logInAsCustomerWithId("4c004c7a-aa08-4714-9f2a-153dce79154d");
+  constructor(private customerApiService: CustomerApiService) {
+    this.loginAsCustomerWithId("4c004c7a-aa08-4714-9f2a-153dce79154d");
   }
 
   getLoggedInCustomer(){
-    return this.loggedInCustomer;
+    return this.loggedInCustomer$.value;
   }
 
-  logOut(){
-    this.loggedInCustomer = undefined;
+  getLoggedInCustomerObservable$(){
+    return this.loggedInCustomer$;
   }
 
-  logInAsCustomerWithId(customerId: string){
-    this.getCustomerWithCart$(customerId).subscribe(payload => {
-      this.loggedInCustomer = payload;
-      this.router.navigateByUrl("login"); //TODO would prefer if the individual login components could decided what to do with the new logged-in customer, maybe as a runnable.
+  isUserLoggedIn(){
+    var customer = this.getLoggedInCustomer();
+    return (customer && customer.cart)
+  }
+
+  getAllCustomers$() {
+    return this.customerApiService.getAllCustomers$();
+  }
+
+  getNumberOfProductTypesInCart(){
+
+    if(!this.isUserLoggedIn()) return 0;
+
+    var loggedInCustomer = this.getLoggedInCustomer()!;
+    var cart = loggedInCustomer.cart!;
+    
+    return cart.cartProducts.length;
+  }
+
+  logout(){
+    this.loggedInCustomer$.next(undefined);
+  }
+
+  loginAsCustomerWithId(customerId: string){
+    this.customerApiService.getCustomerByIdWithCart$(customerId).subscribe(loggedInCustomer => {
+
+      this.loggedInCustomer$.next(loggedInCustomer);
     })
-  }
-  
-  addProductToCartInAmount(product: ProductModel, quantity: number){
-    if(this.loggedInCustomer == null || this.loggedInCustomer.cart == null) return;
-
-    var cart = this.loggedInCustomer.cart;
-
-    var requestDto: AddProductToCartRequestDto = {
-      cartId: cart.id,
-      productId: product.id,
-      quantity: quantity
-    };
-
-    this.httpService.put("https://localhost:7114/api/cart/addproduct", requestDto).subscribe(changedDatabase => {
-      if(!changedDatabase) return;
-      var cartProduct: CartProductModel = new CartProductModel(quantity, product, cart);
-      let duplicateCartProduct =  cart.cartProducts.find(cP => cP.product!.id == cartProduct.product!.id);
-      if(duplicateCartProduct){
-        duplicateCartProduct.quantity += cartProduct.quantity;
-      } else {
-        cart.cartProducts.push(cartProduct);
-      }
-    });
   }
 
   checkoutCustomerCart(){
-    if(this.loggedInCustomer == null || this.loggedInCustomer.cart == null) return;
-    
-    var cart = this.loggedInCustomer.cart;
+    if(!this.isUserLoggedIn()) return;
 
-    this.httpService.putWithoutBody("https://localhost:7114/api/cart/checkout/" + cart.id).subscribe(newOrderId => {
-      console.log(newOrderId);
-      cart.cartProducts = [];
+    var loggedInCustomer = this.getLoggedInCustomer()!;
+    var cart = loggedInCustomer.cart!;
+
+    this.customerApiService.checkoutCustomerCart$(cart).subscribe(() => {
+      this.emptyCart(cart);
+    });
+  }
+  
+  addProductToCartInAmount(product: ProductModel, quantity: number){
+
+    if(!this.isUserLoggedIn()) return;
+
+    var loggedInCustomer = this.getLoggedInCustomer()!;
+    var cart = loggedInCustomer.cart!;
+
+    this.callDatabaseToAddProductToCart(product, cart, quantity);
+  }
+
+  private callDatabaseToAddProductToCart(product: ProductModel, cart: CartModel, quantity: number){
+    this.customerApiService.addProductToCart$(cart, product, quantity).subscribe(didDatabaseAddProduct => {
+
+      if(!didDatabaseAddProduct) return;
+
+      let cartProduct: CartProductModel = new CartProductModel(quantity, product, cart);
+
+      this.addProductToCartWithoutCallingDatabase(cartProduct, cart);
     });
   }
 
-  getAll$() {
-    return this.httpService.get("https://localhost:7114/api/customer")
-      .pipe(map(customerList => {
-        return (customerList as CustomerDto[]).map(customerDto => CustomerEvolver.toModel(customerDto))
-      }));
+  private addProductToCartWithoutCallingDatabase(cartProduct: CartProductModel, cart: CartModel){
+      
+    let isProductAlreadyInCart = cart.cartProducts.some(cP => cP.product!.id == cartProduct.product!.id)
+
+    if(!isProductAlreadyInCart) 
+        cart.cartProducts.push(cartProduct); 
+
+    else {
+      let duplicateCartProduct = cart.cartProducts.find(cP => cP.product!.id == cartProduct.product!.id)!;
+
+      duplicateCartProduct.quantity += cartProduct.quantity;
+    }
+
   }
 
-  getCustomerWithOrder$(customerId: string) {
-    return this.httpService.get("https://localhost:7114/api/customer/orders/" + customerId)
-      .pipe(map(customer => {
-        return CustomerEvolver.toModel(customer as CustomerDto)
-      }));
+  private emptyCart(cart: CartModel){
+    cart.cartProducts = [];
   }
-
-  getCustomerWithCart$(customerId: string){
-    return this.httpService.get("https://localhost:7114/api/customer/cart/" + customerId)
-      .pipe(map(customer => {
-        return CustomerEvolver.toModel(customer as CustomerDto)
-      }));
-  }
-  
-  // add$(customerModel: CustomerModel){
-  //   var customerDto = CustomerEvolver.toDto(customerModel);
-  //   return this.httpService.post("https://localhost:7114/api/customer", customerDto);
-  // }
-
-  // delete$(id: string){
-  //   return this.httpService.delete("https://localhost:7114/api/customer/" + id, id);
-  // }
-
-  // put$(customerModel: CustomerModel){
-  //   var dto = CustomerEvolver.toDto(customerModel);
-  //   return this.httpService.put("https://localhost:7114/api/customer", dto);
-  // }
 
 }

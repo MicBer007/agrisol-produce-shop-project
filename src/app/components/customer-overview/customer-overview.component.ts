@@ -14,14 +14,11 @@ import { Router } from '@angular/router';
 export class CustomerOverviewComponent implements OnInit {
 
   customer?: CustomerModel = undefined;
-  cartValue: number = 0;
 
   constructor(private customerService: CustomerService, private router: Router) {}
 
   ngOnInit(): void {
     this.customer = this.customerService.getLoggedInCustomer();
-    this.customer!.cart!.cartProducts.sort((a, b) => b.quantity - a.quantity);
-    this.customer!.cart!.cartProducts.forEach(cP => this.cartValue += cP.quantity * cP.product!.price);
   }
 
   onViewOrdersClicked(){
@@ -30,10 +27,6 @@ export class CustomerOverviewComponent implements OnInit {
 
   onGoToLoginPageClicked(){
     this.router.navigateByUrl("login");
-  }
-
-  onOrderNowClicked(){
-    this.customerService.checkoutCustomerCart();
   }
 
 }

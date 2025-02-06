@@ -8,37 +8,10 @@
    <div>
       <button class="btn btn-primary accessibility-button" (click)="onViewOrdersClicked()">View Orders</button>
    </div>
-   <div>
-      <button class="btn btn-primary accessibility-button" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasCart" aria-label="Close">Show cart</button>
-   </div>
 </div>
 
 <div class="customer-overview-panel container" *ngIf="customer == undefined">
    <!-- TODO would be better to do this in a seperate, reusable component -->
    You are not yet logged in!
    <button class="btn btn-sm btn-warning" (click)="onGoToLoginPageClicked()">Go to login page</button>
-</div>
-
-<div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasCart" aria-labelledby="offcanvasCartLabel">
-   <div class="offcanvas-header cart-header">
-      <h4 class="offcanvas-title" id="offcanvasExampleLabel">Cart</h4>
-      <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
-    </div>
-    <div class="offcanvas-body">
-      <div *ngIf="customer!.cart!.cartProducts.length > 0">
-         <ul class="cart-items-list">
-            <li *ngFor="let cartItem of customer!.cart!.cartProducts">
-               {{cartItem.quantity}}
-               {{cartItem.product!.name}}
-            </li>
-         </ul>
-         <div class="cart-total">
-            <span>Total: {{cartValue}}</span>
-         </div>
-         <button class="btn btn-large btn-success order-button" (click)="onOrderNowClicked()">Order now</button>
-      </div>
-      <div *ngIf="customer!.cart!.cartProducts.length == 0">
-         Cart is empty!
-      </div>
-   </div>
 </div>

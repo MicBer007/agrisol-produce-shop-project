@@ -1,11 +1,12 @@
 import { Component, Pipe, PipeTransform, TemplateRef } from '@angular/core';
-import { CustomerService } from '../../services/customer-service/customer.service';
+import { CustomerService } from '../../services/customer-services/customer.service';
 import { CustomerModel } from '../../models/customer';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 import { SimplifiedOrder, ToSimplifiedOrder } from '../../models/simplified-order';
 import { OrderModel } from '../../models/order';
 import { OrderService } from '../../services/order-service/order.service';
+import { CustomerLoginService } from '../../services/customer-services/customer-login.service';
 
 @Pipe({name: 'ensureThreeItems'})
 export class FilterPipe implements PipeTransform {
@@ -35,13 +36,13 @@ export class CustomerOrderViewComponent {
 
   orderStatusNames: string[] = ["Cancelled", "In Transit", "Payed", "Delivered"];
 
-  constructor(private customerService: CustomerService, private orderService: OrderService, private router: Router) {}
+  constructor(private customerService: CustomerService, private customerLoginService: CustomerLoginService, private orderService: OrderService, private router: Router) {}
 
   ngOnInit(): void {
-    this.subscribeToLoggedInCustomerToGetCustomerOrders();
+    this.getLoggedInCustomerOrdersUnlessCustomerIsNull();
   }
 
-  subscribeToLoggedInCustomerToGetCustomerOrders(){
+  getLoggedInCustomerOrdersUnlessCustomerIsNull(){
     this.loading = true;
 
     this.customerService.getLoggedInCustomerObservable$().subscribe(customer => {
@@ -51,16 +52,15 @@ export class CustomerOrderViewComponent {
         this.loading = false;
         this.orders = [];
         this.simplifiedOrders = [];
-        return;
 
       } else {
 
-        this.subscribeToGetCustomerOrders(customer);
+        this.getCustomerOrdersFromService(customer);
       }
     });
   }
 
-  subscribeToGetCustomerOrders(customer: CustomerModel){
+  getCustomerOrdersFromService(customer: CustomerModel){
     this.orderService.getOrdersOfCustomer$(customer.id).subscribe(payload => {
 
       this.orders = payload;
@@ -72,13 +72,21 @@ export class CustomerOrderViewComponent {
     });
   }
 
-  onGoToLoginPageClicked(){
+  protected onGoToLoginPageClicked(){
     this.router.navigateByUrl("login");
   }
 
-  onViewMoreDetailsClicked(order: SimplifiedOrder){
+  protected onViewMoreDetailsClicked(order: SimplifiedOrder){
     this.orderToDetail = this.orders.find(o => o.id! == order.id);
     this.total = order.value;
+  }
+
+  protected isUserLoggedIn(){
+    return this.customerService.isUserLoggedIn();
+  }
+
+  protected onLogInClicked(){
+    this.customerLoginService.promptUserToLogInWithDefaultMessage();
   }
 
 }

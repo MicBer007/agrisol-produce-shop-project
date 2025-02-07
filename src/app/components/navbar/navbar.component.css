@@ -1,7 +1,8 @@
 .sp-navbar{
    background-color: rgb(29, 128, 65);
-   padding-top: 10px;
-   padding-bottom: 10px;
+   min-height: 56px;
+   padding-top: 8px;
+   padding-bottom: 8px;
    padding-left: 14px;
    padding-right: 17px;
    display: flex;
@@ -28,9 +29,10 @@
 }
 .sp-cart-circle{
    padding-top: 2px;
+   padding-left: 5px;
    margin-left: 3px;
    margin-right: 3px;
-   padding-left: 5px;
+   margin-bottom: 4px;
    justify-content: center;
    flex: content;
    height: 35px;

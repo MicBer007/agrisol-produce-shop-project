@@ -11,7 +11,7 @@ export class ProductService {
 
   constructor(private httpService: HttpService) { }
 
-  getAll$() {
+  getAllProductsObservable$() {
     return this.httpService.get("https://localhost:7114/api/product")
       .pipe(map(productList => {
         return (productList as ProductDto[]).map(productDto => ProductEvolver.toModel(productDto))

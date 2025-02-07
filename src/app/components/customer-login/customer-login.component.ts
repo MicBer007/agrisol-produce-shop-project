@@ -1,7 +1,9 @@
 import { Component } from '@angular/core';
 import { CustomerModel } from '../../models/customer';
-import { CustomerService } from '../../services/customer-service/customer.service';
+import { CustomerService } from '../../services/customer-services/customer.service';
 import { CommonModule } from '@angular/common';
+import { Modal } from 'bootstrap';
+import { CustomerLoginService } from '../../services/customer-services/customer-login.service';
 
 @Component({
   selector: 'app-customer-login',
@@ -11,26 +13,55 @@ import { CommonModule } from '@angular/common';
 })
 export class CustomerLoginComponent {
 
-  customers: CustomerModel[] = [];
+  protected message: string = "Log in";
 
-  constructor(private customerService: CustomerService) { }
+  protected customers: CustomerModel[] = [];
+
+  constructor(private customerLoginPromptingService: CustomerLoginService, private customerService: CustomerService) { }
 
   ngOnInit(): void {
-    this.customerService.getAllCustomers$().subscribe(payload => {
-      this.customers = payload;
+    this.getCustomerArrayFromService();
+    this.initializeLoginPromptingResponsibility();
+  }
+
+  private getCustomerArrayFromService(){
+    this.customerService.getAllCustomers$().subscribe(customersList => {
+      this.customers = customersList;
     })
   }
+
+  private initializeLoginPromptingResponsibility(){
+    this.customerLoginPromptingService.getLoginPromptingResponsability$().subscribe(messageToPrompt => {
+
+      if(!messageToPrompt) return;
+
+      this.message = messageToPrompt;
+      this.showCustomerLoginModal();
+    });
+  }
   
-  onLoginClicked(customer: CustomerModel) {
+  protected onLoginClicked(customer: CustomerModel) {
     this.customerService.loginAsCustomerWithId(customer.id);
+    this.hideCustomerLoginModal();
   }
 
-  onLogoutClicked(){
-    this.customerService.logout();
-  }
-
-  isUserLoggedIn(){
+  protected isUserLoggedIn(){
     return this.customerService.isUserLoggedIn();
+  }
+
+  protected showCustomerLoginModal(){
+    this.getCustomerLoginModal().show();
+  }
+
+  protected hideCustomerLoginModal(){
+    this.getCustomerLoginModal().hide();
+  }
+
+  private customerLoginModal?: Modal = undefined;
+
+  private getCustomerLoginModal(){
+    if(!this.customerLoginModal) this.customerLoginModal = new Modal("#customerLoginModal");
+    return this.customerLoginModal!;
   }
   
 }

@@ -24,8 +24,8 @@
       <div class="sp-nav-item" *ngIf="isUserLoggedIn()">
          <a class="btn btn-sm btn-primary" aria-current="page" routerLinkActive="active" (click)="onSignOutClicked()">Sign out</a>
       </div>
-      <div class="sp-nav-item">
-         <a class="btn btn-primary" aria-current="page" routerLinkActive="active" data-bs-toggle="modal" data-bs-target="#customerLoginModal" (click)="isNavbarCollapsed=false">Log in</a>
+      <div class="sp-nav-item" *ngIf="!isUserLoggedIn()">
+         <a class="btn btn-primary" aria-current="page" routerLinkActive="active" (click)="onLoginClicked(); isNavbarCollapsed=false;">Log in</a>
       </div>
    </div>
 </div>

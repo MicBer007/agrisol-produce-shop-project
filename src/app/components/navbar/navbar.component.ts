@@ -1,8 +1,9 @@
 import { Component } from '@angular/core';
-import { CustomerService } from '../../services/customer-service/customer.service';
+import { CustomerService } from '../../services/customer-services/customer.service';
 import { CommonModule } from '@angular/common';
 import { RouterLink, RouterLinkActive } from '@angular/router';
 import { FormsModule } from '@angular/forms';
+import { CustomerLoginService } from '../../services/customer-services/customer-login.service';
 
 @Component({
   selector: 'app-navbar',
@@ -14,7 +15,7 @@ export class NavbarComponent {
 
   isNavbarCollapsed = false;
 
-  constructor(private customerService: CustomerService){ }
+  constructor(private customerService: CustomerService, private customerLoginService: CustomerLoginService){ }
 
   isUserLoggedIn(){
     return this.customerService.isUserLoggedIn();
@@ -32,6 +33,10 @@ export class NavbarComponent {
 
   onSignOutClicked(){
     this.customerService.logout();
+  }
+
+  onLoginClicked(){
+    this.customerLoginService.promptUserToLogInWithDefaultMessage();
   }
   
 }

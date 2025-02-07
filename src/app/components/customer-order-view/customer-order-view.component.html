@@ -1,112 +1,52 @@
 <div class="container data-div">
-   <div *ngIf="!loading">
-      <div *ngIf="simplifiedOrders.length > 0">
-         <div class="m-3 mb-4">
-            <h1 class="order-page-title">Your Orders</h1>
-         </div>
-         
-         <!-- <table class="table table-responsive table-striped">
-               <thead>
-                  <tr>
-                     <td>#</td>
-                     <td class="status-field">Status</td>
-                     <td>Value</td>
-                     <td>Products</td>
-                  </tr>
-               </thead>
-               <tbody>
-                  <tr *ngFor="let order of simplifiedOrders">
-                     <td>{{simplifiedOrders.indexOf(order) + 1}}</td>
-                     <td class="status-field"><span [ngClass] ="{'in-cart':order.status==0 ,'payed':order.status==1,'delivered':order.status==2}">{{orderStatusNames[order.status]}}</span></td>
-                     <td>R{{order.value}}</td>
-                     <td>
-                        <span class="order-item" *ngFor="let product of order.orderProducts | slice: 0: 5">
-                           {{product.productName}}
-                        </span>
-                        <span *ngIf="order.orderProducts.length > 5">
-                           ...
-                        </span>
-                     </td>
-                  </tr>
-               </tbody>
-         </table> -->
-   
-         <!-- <div class="container-fluid">
-            <div class="row">
-               <div class="col col-12 col-md-6 col-lg-4 order-section-outer">
-                  <div class="order-section-inner">
-                     <div class="in-cart-section-header">In cart</div>
-                     <div class="section-body">
-                        <div class="order" *ngFor="let order of simplifiedOrders | filter: 'status': 0">
-                           Order
-                           <div *ngFor="let orderProduct of order.orderProducts">
-                              {{orderProduct.productName}}
-                           </div>
-                        </div>
-                     </div>
-                  </div>
-               </div>
-               <div class="col col-12 col-md-6 col-lg-4 order-section-outer">
-                  <div class="order-section-inner">
-                     <div class="payed-section-header">Payed</div>
-                     <div class="section-body">
-                        <div class="order" *ngFor="let order of simplifiedOrders | filter: 'status': 1">
-                           Order
-                           <ul>
-                              <li *ngFor="let orderProduct of order.orderProducts">{{orderProduct.productName}}</li>
-                           </ul>
-                        </div>
-                     </div>
-                  </div>
-               </div>
-               <div class="col col-12 col-md-6 col-lg-4 order-section-outer">
-                  <div class="order-section-inner">
-                     <div class="delivered-section-header">Delivered</div>
-                     <div class="section-body">
-                        <div class="order" *ngFor="let order of simplifiedOrders | filter: 'status': 2">
-                           Order
-                           <div *ngFor="let orderProduct of order.orderProducts">
-                              {{orderProduct.productName}}
-                           </div>
-                        </div>
-                     </div>
-                  </div>
-               </div>
+   <div *ngIf="isUserLoggedIn()">
+      <div *ngIf="!loading">
+         <div *ngIf="simplifiedOrders.length > 0">
+            <div class="m-3 mb-4">
+               <h1 class="order-page-title">Your Orders</h1>
             </div>
-         </div> -->
-   
-         <div class="customer-order row" *ngFor="let order of simplifiedOrders">
-            <div class="col-2 no-gutters headings-box">
-               <div class="headings-box-order-id-tag">Status:</div>
-               <div class="headings-box-products-tag">Products:</div>
-            </div>
-            <div class="col-10 no-gutters order-info-box">
-               <div class="row order-details">
-                  <div class="col-6 order-status">
-                     <span class="order-status-content" [ngClass]="{'cancelled': order.status==0, 'in-transit': order.status==1, 'payed': order.status==2,'delivered': order.status==3}">{{orderStatusNames[order.status]}}</span>
-                  </div>
-                  <div class="col-6 order-value-field">
-                     <span class="order-value-content">Total: R{{order.value}}</span>
-                  </div>
+            <div class="customer-order row" *ngFor="let order of simplifiedOrders">
+               <div class="col-2 no-gutters headings-box">
+                  <div class="headings-box-order-id-tag">Status:</div>
+                  <div class="headings-box-products-tag">Products:</div>
                </div>
-               <div class="row no-gutter order-items">
-                  <div class="col-8">
-                     <div class="order-product-item-content info" *ngFor="let orderProduct of order.orderProducts">
-                        {{orderProduct.productName | titlecase}}
+               <div class="col-10 no-gutters order-info-box">
+                  <div class="row order-details">
+                     <div class="col-6 order-status">
+                        <span class="order-status-content" [ngClass]="{'cancelled': order.status==0, 'in-transit': order.status==1, 'payed': order.status==2,'delivered': order.status==3}">{{orderStatusNames[order.status]}}</span>
+                     </div>
+                     <div class="col-6 order-value-field">
+                        <span class="order-value-content">Total: R{{order.value}}</span>
                      </div>
                   </div>
-                  <div class="col-4 view-more-order-details-box">
-                     <a class="view-more-order-details-field clickable" type="button" (click)="onViewMoreDetailsClicked(order)" data-bs-toggle="offcanvas" data-bs-target="#offcanvasOrderDetail" aria-label="Close">View more details ⤑</a>
+                  <div class="row no-gutter order-items">
+                     <div class="col-8">
+                        <div class="order-product-item-content info" *ngFor="let orderProduct of order.orderProducts">
+                           {{orderProduct.productName | titlecase}}
+                        </div>
+                     </div>
+                     <div class="col-4 view-more-order-details-box">
+                        <a class="view-more-order-details-field clickable" type="button" (click)="onViewMoreDetailsClicked(order)" data-bs-toggle="offcanvas" data-bs-target="#offcanvasOrderDetail" aria-label="Close">View more details ⤑</a>
+                     </div>
                   </div>
                </div>
             </div>
          </div>
+         <div *ngIf="simplifiedOrders.length == 0">
+            You have no orders for the moment!
+         </div>
       </div>
-      <div *ngIf="simplifiedOrders.length == 0">
-         You have no orders for the moment!
-      </div>
+      <div class="loader" *ngIf="loading"></div>
    </div>
-   <div class="loader" *ngIf="loading"></div>
+   <div *ngIf="!isUserLoggedIn()">
+      <div class="m-3 mb-4">
+         <h1 class="order-page-title">Your Orders</h1>
+      </div>
+      <div class="ms-2 mb-3">
+         You are not logged in!
+      </div>
+      <button class="btn btn-success ms-1 mb-2" (click)="onLogInClicked()">Log in</button>
+   </div>
 </div>
 
 <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasOrderDetail" aria-labelledby="offcanvasOrderDetailLabel">

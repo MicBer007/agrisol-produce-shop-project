@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
 import { HttpService } from '../http-service/http.service';
-import { CustomerModel } from '../../models/customer';
 import { CustomerEvolver } from '../../evolvers/customer-evolver';
 import { CustomerDto } from '../../dto/customer-dto';
 import { AddProductToCartRequestDto } from '../../dto/add-product-to-cart-request-dto';

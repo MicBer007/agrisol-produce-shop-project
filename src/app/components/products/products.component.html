@@ -10,7 +10,7 @@
         <div class="card-body">
           <div class="container row no-gutters pt-3">
             <div class="col-12 col-md-6">
-              <button class="btn btn-success btn-lg" (click)="onDetailProductClicked(product)" [disabled]="product.amount === 0 && product.inStock === 0" type="button" data-bs-toggle="modal" data-bs-target="#productAddToCartModal">Buy</button>
+              <button class="btn btn-success btn-lg" (click)="onBuyProductClicked(product)" [disabled]="product.inStock === 0" type="button">Buy</button>
             </div>
             <div class="col-12 col-md-6 stock-amount-section">
               <span class="badge text-bg-dark rounded-pill stock-amount-field">{{product.inStock}} in stock</span>
@@ -22,34 +22,34 @@
   </div>
 </div>
 
-<div class="modal fade" id="productAddToCartModal" tabindex="-1" aria-labelledby="productAddToCartModalLabel" aria-hidden="true">
-  <div class="modal-dialog modal-dialog-centered">
-    <div class="modal-content" *ngIf="productToDetail">
-      <div class="modal-header product-detail-header">
-        <h1 class="modal-title fs-5" id="exampleModalLabel">{{productToDetail.name | titlecase}}</h1>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div>
-      <div class="modal-body product-detail-body">
-        <div class="product-detail-info">
-          <div>
-            Price: R{{productToDetail.price}}
-          </div>
-          <div >
-          Amount available: {{productToDetail.inStock}}
+<div class="modal fade" id="productBuyModal" tabindex="-1" aria-labelledby="buyProductModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content" *ngIf="productToDetail">
+        <div class="modal-header product-detail-header">
+          <h1 class="modal-title fs-5" id="buyProductModalLabel">{{productToDetail.name | titlecase}}</h1>
+          <button type="button" class="btn-close" aria-label="Close" (click)="hideProductBuyModal()"></button>
+        </div>
+        <div class="modal-body product-detail-body">
+          <div class="product-detail-info">
+            <div>
+              Price: R{{productToDetail.price}}
+            </div>
+            <div >
+            Amount available: {{productToDetail.inStock}}
+            </div>
           </div>
         </div>
+        <div class="modal-footer product-detail-footer">
+          <button class="btn btn-primary product-buy-button" (click)="onAddDetailedProductToCartClicked(productToDetail)" [disabled]="productBuyAmount == 0">Add to cart</button>
+          <input class="product-buy-input" type="number" [(ngModel)]="productBuyAmount" min="0" max="{{productToDetail.inStock}}" oninput="validity.valid||(value='0');">
+        </div>
       </div>
-      <div class="modal-footer product-detail-footer">
-        <button class="btn btn-primary product-buy-button" (click)="onAddDetailedProductToCartClicked(productToDetail)" [disabled]="productBuyAmount == 0" data-bs-toggle="modal" data-bs-target="#productAddToCartModal">Add to cart</button>
-        <input class="product-buy-input" type="number" [(ngModel)]="productBuyAmount" min="0" max="{{productToDetail.inStock}}" oninput="validity.valid||(value='0');">
+      <div class="modal-content" *ngIf="!productToDetail">
+        <div class="modal-header">
+          <h1 class="modal-title fs-5" id="exampleModalLabel">Product</h1>
+          <button type="button" class="btn-close" aria-label="Close" (click)="hideProductBuyModal()"></button>
+        </div>
+        <div class="loader"></div>
       </div>
-    </div>
-    <div class="modal-content" *ngIf="!productToDetail">
-      <div class="modal-header">
-        <h1 class="modal-title fs-5" id="exampleModalLabel">Product</h1>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div>
-      <div class="loader"></div>
     </div>
   </div>
-</div>

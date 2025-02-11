@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, Observable, Observer } from 'rxjs';
 import { CustomerModel } from '../../models/customer';
 import { ProductModel } from '../../models/product';
 import { CartProductModel } from '../../models/cart-product';
@@ -55,15 +55,27 @@ export class CustomerService {
     })
   }
 
-  checkoutCustomerCart(){
+  checkoutCustomerCart$(){
+
     if(!this.isUserLoggedIn()) return;
 
-    var loggedInCustomer = this.getLoggedInCustomer()!;
-    var cart = loggedInCustomer.cart!;
+    var loggedInCustomer: CustomerModel = this.getLoggedInCustomer()!;
+    var customerApiService: CustomerApiService = this.customerApiService;
 
-    this.customerApiService.checkoutCustomerCart$(cart).subscribe(() => {
-      this.emptyCart(cart);
-    });
+    function sequenceSubscriber(observer: Observer<string>) {
+  
+      var cart = loggedInCustomer.cart!;
+  
+      customerApiService.checkoutCustomerCart$(cart).subscribe(newOrderId => {
+        // cart.cartProducts = [];
+        observer.next(newOrderId as string);
+        observer.complete();
+      });
+  
+      return {unsubscribe() {}};
+    }
+    
+    return new Observable(sequenceSubscriber);
   }
   
   addProductToCartInAmount(product: ProductModel, quantity: number){
@@ -100,10 +112,6 @@ export class CustomerService {
       duplicateCartProduct.quantity += cartProduct.quantity;
     }
 
-  }
-
-  private emptyCart(cart: CartModel){
-    cart.cartProducts = [];
   }
 
 }

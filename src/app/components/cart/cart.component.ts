@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { CustomerService } from '../../services/customer-services/customer.service';
 import { CartModel } from '../../models/cart';
 import { CommonModule } from '@angular/common';
+import { Router } from '@angular/router';
+import { Offcanvas } from 'bootstrap';
 
 @Component({
   selector: 'app-cart',
@@ -14,7 +16,9 @@ export class CartComponent implements OnInit {
   cart?: CartModel = undefined;
   cartValue: number = 0;
 
-  constructor(private customerService: CustomerService) { }
+  private cartOffcanvas?: Offcanvas = undefined;
+
+  constructor(private customerService: CustomerService, private router: Router) { }
 
   ngOnInit(): void {
     this.customerService.getLoggedInCustomerObservable$().subscribe(customer => {
@@ -28,16 +32,36 @@ export class CartComponent implements OnInit {
       } else 
           this.cart = undefined;
     });
+    this.initializeCartOffcanvas();
   }
 
-  private sortCartAndDetermineCartValue(cart: CartModel){
+  private sortCartAndDetermineCartValue(cart: CartModel){ //TODO not working properly
+
+    this.cartValue = 0;
 
     cart.cartProducts.sort((a, b) => b.quantity - a.quantity);
     cart.cartProducts.forEach(cP => this.cartValue += cP.quantity * cP.product!.price);
   }
 
-  onOrderNowClicked(){
-    this.customerService.checkoutCustomerCart();
+  protected onCheckoutCartClicked(){
+    this.hideCartOffcanvas();
+    this.router.navigateByUrl("checkout");
+  }
+
+  protected showCartOffcanvas(){
+    this.getCartOffcanvas().show();
+  }
+
+  protected hideCartOffcanvas(){
+    this.getCartOffcanvas().hide();
+  }
+
+  private getCartOffcanvas(){
+    return this.cartOffcanvas!;
+  }
+
+  private initializeCartOffcanvas(){
+    this.cartOffcanvas = new Offcanvas("#cartOffcanvas");
   }
 
 }

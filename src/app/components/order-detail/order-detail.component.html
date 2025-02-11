@@ -1,0 +1,5 @@
+<p>order-detail works!</p>
+
+<div class="data-div" *ngIf="order">
+   {{order!.customerId}} {{order!.orderProducts.length}} {{orderStatusNames[order!.status]}}
+</div>

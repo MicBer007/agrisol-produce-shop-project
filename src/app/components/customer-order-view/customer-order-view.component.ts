@@ -34,7 +34,7 @@ export class CustomerOrderViewComponent {
 
   loading: boolean = false;
 
-  orderStatusNames: string[] = ["Cancelled", "In Transit", "Payed", "Delivered"];
+  orderStatusNames: string[] = ["Cancelled", "In Transit", "Paid", "Delivered"];
 
   constructor(private customerService: CustomerService, private customerLoginService: CustomerLoginService, private orderService: OrderService, private router: Router) {}
 

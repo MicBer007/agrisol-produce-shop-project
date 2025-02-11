@@ -59,17 +59,9 @@ export class ProductsComponent implements OnInit {
   }
 
   private productBuyModal?: Modal = undefined;
-
   private getProductBuyModal(){
     if(!this.productBuyModal) this.productBuyModal = new Modal("#productBuyModal");
     return this.productBuyModal!;
-  }
-
-  private customerLoginModal?: Modal = undefined;
-
-  private getCustomerLoginModal(){
-    if(!this.customerLoginModal) this.customerLoginModal = new Modal("#customerLoginModal");
-    return this.customerLoginModal!;
   }
 
 }

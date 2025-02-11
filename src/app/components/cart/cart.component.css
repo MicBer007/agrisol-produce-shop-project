@@ -15,11 +15,7 @@
    margin-bottom: 30px;
    text-align: right;
    > span{
-      border-bottom-color: rgb(176, 206, 216);
-      border-top-color: rgb(176, 206, 216);
-      border-bottom-width: 1px;
-      border-top-width: 1px;
-      border-bottom-style: solid;
-      border-top-style: solid;
+      border-top: 1px solid rgb(176, 206, 216);
+      border-bottom: 1px solid rgb(176, 206, 216);
    }
 }

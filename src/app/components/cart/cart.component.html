@@ -1,9 +1,9 @@
-<div class="offcanvas offcanvas-end" tabindex="-1" id="cartOffcanvas" aria-labelledby="cartOffcanvasLabel">
+<div class="offcanvas offcanvas-end" id="cartOffcanvas" tabindex="-1" aria-labelledby="cartOffcanvasLabel">
    <div class="offcanvas-header cart-header">
-      <h4 class="offcanvas-title" id="offcanvasExampleLabel">Cart</h4>
-      <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
-    </div>
-    <div class="offcanvas-body" *ngIf="cart">
+      <h4 class="offcanvas-title" id="cartOffcanvasLabel">Cart</h4>
+      <button type="button" class="btn-close" (click)="hideCartOffcanvas()" aria-label="Close"></button>
+   </div>
+   <div class="offcanvas-body" *ngIf="cart">
       <div *ngIf="cart.cartProducts.length > 0">
          <ul class="cart-items-list">
             <li *ngFor="let cartItem of cart.cartProducts">
@@ -12,9 +12,9 @@
             </li>
          </ul>
          <div class="cart-total">
-            <span>Total: {{cartValue}}</span>
+            <span>Total: R{{cartValue}}</span>
          </div>
-         <button class="btn btn-large btn-success order-button" (click)="onOrderNowClicked()">Checkout cart</button>
+         <button class="btn btn-large btn-success order-button" (click)="onCheckoutCartClicked()">Checkout cart</button>
       </div>
       <div *ngIf="cart.cartProducts.length == 0">
          Cart is empty!

@@ -1,0 +1,14 @@
+<div class="data-div sp-centre-content">
+   <div>Name field</div>
+   <div>Age field</div>
+   <div>Bank field</div>
+   <div>XYZ field</div>
+   <div>foo field</div>
+   <div>bar field</div>
+   <div>garfield</div>
+   <button class="btn btn-warning mt-2" (click)="onPayClicked()">Pay</button>
+   <div class="alert alert-success mt-4 sp-alert-small" *ngIf="paid" role="alert">
+      Payment successful! Do you want to view your order?
+      <button class="btn btn-primary ms-2" (click)="onViewOrderClicked()">View order</button>
+   </div>
+</div>

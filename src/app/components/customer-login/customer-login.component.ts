@@ -27,7 +27,7 @@ export class CustomerLoginComponent {
   private getCustomerArrayFromService(){
     this.customerService.getAllCustomers$().subscribe(customersList => {
       this.customers = customersList;
-    })
+    });
   }
 
   private initializeLoginPromptingResponsibility(){
